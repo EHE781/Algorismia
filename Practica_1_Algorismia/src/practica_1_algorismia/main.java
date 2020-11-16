@@ -7,8 +7,15 @@ package practica_1_algorismia;
 
 /**
  *
- * @author tomeu
+ * @author emanu
  */
-public class NewClass {
+public class main {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+    }
     
 }
