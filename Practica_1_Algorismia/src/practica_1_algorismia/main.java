@@ -7,8 +7,13 @@ package practica_1_algorismia;
 
 /**
  *
- * @author tomeu
+ * @author emanu
  */
-public class NewClass {
+public class main {
+
+    
+    public static void main(String[] args) {
+        System.out.println("rumano");
+    }
     
 }
