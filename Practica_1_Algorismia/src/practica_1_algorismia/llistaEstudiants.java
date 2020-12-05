@@ -9,18 +9,14 @@ package practica_1_algorismia;
  *
  * @author tomeu
  */
-public class llistaEstudiants implements interficieLlista{
+public class llistaEstudiants implements interficieLlista<nodoEstudiant>{
     private nodoEstudiant primer;
 
-    @Override
-    public void insertar(Object elem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public llistaEstudiants(){
+        primer = null;
     }
-
-    @Override
-    public Object trobar(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+    
 
     @Override
     public void borrar(String nom) {
@@ -29,6 +25,16 @@ public class llistaEstudiants implements interficieLlista{
 
     @Override
     public String imprimir() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void insertar(nodoEstudiant elem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public nodoEstudiant trobar(String nom) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

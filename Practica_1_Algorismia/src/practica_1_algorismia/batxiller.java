@@ -10,32 +10,38 @@ package practica_1_algorismia;
  * @author tomeu
  */
 public class batxiller extends curs{
-    enum especialitat {primer,segon}
+    public enum especialitat {primer,segon}
     private especialitat type;
+    
+    public batxiller (){
+        nom = "";
+        codi = 0;
+        llista = new llistaAssignatures();
+    }
 
     @Override
     public String imprimir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "CURS DE BATXILLER:\n\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n"; 
     }
 
     @Override
     public void posarNom(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.nom = nom;
     }
 
     @Override
     public void posarCodi(int codi) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.codi = codi;
     }
 
     @Override
     public String getNom() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return nom;
     }
 
     @Override
     public int getCodi() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return codi;
     }
     
     public void setEspecialitat(especialitat a){

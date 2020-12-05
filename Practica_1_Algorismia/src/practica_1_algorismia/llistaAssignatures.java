@@ -11,49 +11,40 @@ import java.util.ArrayList;
  *
  * @author Usuario
  */
-public class llistaAssignatures {
-        Exception ListaVacia,posicionInexistente;
+public class llistaAssignatures implements interficieLlista<assignatura>{
+        //Exception ListaVacia,posicionInexistente;
 	private ArrayList <assignatura> llista;
 
 	public llistaAssignatures() {
-		llista = new ArrayList<assignatura>();
-	}
-
-        public void insertar(assignatura elemento) {
-		llista.add(elemento);
+		llista = new ArrayList<>();
 	}
 
         public boolean vacia() {
             return llista.isEmpty();
         }
-
-        public assignatura borrar(String nom) throws Exception {
-                int pos = buscarPos(nom);
-                if (((llista.size())>pos)&& (pos>=0)) return llista.remove(pos);
-                else throw posicionInexistente;
-	}
-
-        public assignatura consultar(String nom) throws Exception {
+       
+        public assignatura consultar(String nom) {
                 int pos = buscarPos(nom);
                 if (((llista.size())>pos)&& (pos>=0)) return llista.get(pos);
-                else throw posicionInexistente;
+                else System.err.println("No existe");
+                return null;
         }
 
-        private int buscarPos(String nom) throws Exception {
+        private int buscarPos(String nom) {
             for (int i=0;i<llista.size();i++) {
                 if (nom==llista.get(i).nom) return i;
             }
             return -1;
         }
 
-       private void intercambiar(int pos1, int pos2) throws Exception {
+       private void intercambiar(int pos1, int pos2) {
            assignatura aux;
            if ((((llista.size())>pos1)&& (pos1>=0))&&(((llista.size())>pos2)&& (pos2>=0))) {
                     aux=llista.get(pos1);
                     llista.set(pos1,llista.get(pos2));
                     llista.set(pos2, aux);
                 }
-                else throw posicionInexistente;
+                else System.err.println("No existe");
        }
 
        public boolean buscar(assignatura elemento) {
@@ -62,4 +53,31 @@ public class llistaAssignatures {
        public int numElementos() {
            return llista.size();
        } 
+
+   
+    @Override
+    public String imprimir() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void borrar(String nom) {
+        int pos = buscarPos(nom);
+                if (((llista.size())>pos)&& (pos>=0)){
+                    llista.remove(pos);
+                }
+                else {
+                    System.err.println("No existe");
+                }
+    }
+
+    @Override
+    public assignatura trobar(String nom) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void insertar(assignatura elemento) {
+	llista.add(elemento);
+    }
 }

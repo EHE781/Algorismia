@@ -10,33 +10,38 @@ package practica_1_algorismia;
  * @author tomeu
  */
 public class FP extends curs {
-    enum especialitat {mecanica,electronica,informatica}
+    public enum especialitat {mecanica,electronica,informatica}
     private especialitat type;
 
+    public FP (){
+        nom = "";
+        codi=0;
+        llista = new llistaAssignatures();
+    }
     //Funcions
     @Override
     public String imprimir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "CURS DE FP:\n\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n";
     }
 
     @Override
     public void posarNom(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.nom = nom;
     }
 
     @Override
     public void posarCodi(int codi) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.codi = codi;
     }
 
     @Override
     public String getNom() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return nom;
     }
 
     @Override
     public int getCodi() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return codi;
     }
     
     public void setEspecialitat(especialitat a){

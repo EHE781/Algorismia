@@ -13,7 +13,7 @@ public class nodoEstudiant {
     private estudiant est;
     private nodoEstudiant seg;
     
-    public void nodoEstudiant(estudiant est){
+    public nodoEstudiant(estudiant est){
         this.est = est;
     }
     

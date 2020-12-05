@@ -9,32 +9,65 @@ package practica_1_algorismia;
  *
  * @author tomeu
  */
-public class llistaCursos implements interficieLlista{
+public class llistaCursos implements interficieLlista<curs>{
     private curs primer;
     
     public llistaCursos(){
         primer = null;
     }
 
-    
     @Override
-    public void insertar(Object elem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void insertar(curs elem) {
+        curs aux;
+        aux = primer;
+        primer = elem;
+        elem.seg = aux;
     }
 
     @Override
-    public Object trobar(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public curs trobar(String nom) {
+        curs aux = primer;
+        while(!aux.nom.equals(nom) && aux != null){
+            aux = aux.seg;
+        }
+        if(aux == null) return null;
+        else return aux;
     }
 
     @Override
     public void borrar(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        curs aux,paux;
+        paux = null;
+        aux = primer;
+        while(!aux.nom.equals(nom) && aux != null){
+            paux = aux;
+            aux = aux.seg;
+        }
+        if(aux != null){
+            paux.seg = aux.seg;
+        }
     }
 
     @Override
     public String imprimir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String res = "";
+        curs aux = primer;
+        while(aux != null){
+            if(aux instanceof FP){
+                FP aux1 = (FP) aux;
+                res += aux1.imprimir();
+                res += "\n";
+            }
+            else{
+                batxiller aux2 = (batxiller) aux;
+                res += aux2.imprimir();
+                res += "\n";
+            }
+            aux = aux.seg;
+        }
+        return res;
     }
+
+   
     
 }

@@ -13,9 +13,15 @@ public class optativa extends assignatura{
     enum perfil {teoric,practica}
     private perfil per;
     
+    public optativa(){
+        nom = "";
+        codi = 0;
+        llista = new llistaEstudiants();
+    }
+    
     @Override
     public String imprimir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "ASSIGNATURA OPTATIVA :\n\nNOM : "+nom+"\nCODI : "+codi+"\nPERFIL : "+per.name()+"\n";
     }
 
     @Override

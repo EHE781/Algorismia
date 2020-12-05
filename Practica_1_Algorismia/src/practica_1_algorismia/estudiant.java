@@ -14,4 +14,14 @@ public class estudiant {
     private String dni;
     private llistaAssignatures llista;
     
+    public estudiant (String nom , String dni){
+        this.nom = nom;
+        this.dni = dni;
+        llista = new llistaAssignatures();
+    }
+    
+    public String imprimirEstudiant(){
+        return "Estudiant:\n\nNOM : "+nom+"\nDNI : "+dni+"\n";
+    }
+    
 }

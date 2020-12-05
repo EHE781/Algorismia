@@ -10,29 +10,41 @@ package practica_1_algorismia;
  * @author tomeu
  */
 public class obligatoria extends assignatura{
+    private int credits;
+    
+    public obligatoria(){
+        nom = "";
+        codi = 0;
+        llista = new llistaEstudiants();
+    }
+    
+    public void setCredits(int credits){
+        this.credits = credits;
+    }
+    
     @Override
     public String imprimir() {
-        return "";
+        return "ASSIGNATURA OBLIGATORIA:\n\nNOM : "+nom+"\nCODI : "+codi+"\nCREDITS : "+credits+"\n";
     }
 
     @Override
     public void posarNom(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.nom = nom;
     }
 
     @Override
     public void posarCodi(int codi) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.codi = codi;
     }
 
     @Override
     public String getNom() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return nom;
     }
 
     @Override
     public int getCodi() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return codi;
     }
     
 }
