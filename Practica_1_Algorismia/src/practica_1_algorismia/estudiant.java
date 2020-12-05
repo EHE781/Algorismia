@@ -12,6 +12,6 @@ package practica_1_algorismia;
 public class estudiant {
     private String nom;
     private String dni;
-    
+    private llistaAssignatures llista;
     
 }

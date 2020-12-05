@@ -12,6 +12,7 @@ package practica_1_algorismia;
 public abstract class assignatura implements interficieVariables {
     protected String nom;
     protected int codi;
+    protected llistaEstudiants llista;
     
     public abstract String imprimir(); 
 }

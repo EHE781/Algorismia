@@ -13,6 +13,7 @@ public abstract class curs implements interficieVariables{
     protected String nom;
     protected int codi;
     protected curs seg;
+    protected llistaAssignatures llista;
     
     public abstract String imprimir();
 }
