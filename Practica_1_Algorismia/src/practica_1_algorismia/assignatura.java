@@ -7,13 +7,11 @@ package practica_1_algorismia;
 
 /**
  *
- * @author emanu
+ * @author tomeu
  */
-public class main {
-
+public abstract class assignatura implements interficieVariables {
+    protected String nom;
+    protected int codi;
     
-    public static void main(String[] args) {
-        curs a;
-    }
-    
+    public abstract String imprimir(); 
 }

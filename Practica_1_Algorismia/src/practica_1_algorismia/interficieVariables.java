@@ -7,13 +7,11 @@ package practica_1_algorismia;
 
 /**
  *
- * @author emanu
+ * @author tomeu
  */
-public class main {
-
-    
-    public static void main(String[] args) {
-        curs a;
-    }
-    
+public interface interficieVariables {
+    public abstract void posarNom (String nom);
+    public abstract void posarCodi(int codi);
+    public abstract String getNom();
+    public abstract int getCodi();
 }

@@ -7,13 +7,11 @@ package practica_1_algorismia;
 
 /**
  *
- * @author emanu
+ * @author tomeu
  */
-public class main {
-
-    
-    public static void main(String[] args) {
-        curs a;
-    }
-    
+public interface interficieLlista <object>{
+    public void insertar(object elem);
+    public object trobar(String nom);
+    public void borrar(String nom);
+    public String imprimir();
 }

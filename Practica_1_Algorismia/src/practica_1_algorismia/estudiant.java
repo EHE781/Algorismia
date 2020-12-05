@@ -7,13 +7,11 @@ package practica_1_algorismia;
 
 /**
  *
- * @author emanu
+ * @author tomeu
  */
-public class main {
-
+public class estudiant {
+    private String nom;
+    private String dni;
     
-    public static void main(String[] args) {
-        curs a;
-    }
     
 }
