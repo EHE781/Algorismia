@@ -16,6 +16,9 @@ public class nodoEstudiant {
     public nodoEstudiant(estudiant est){
         this.est = est;
     }
+    public estudiant getEstudiant(){
+        return this.est;
+    }
     
     public void setSeg(nodoEstudiant seg){
         this.seg = seg;

@@ -10,18 +10,27 @@ package practica_1_algorismia;
  * @author tomeu
  */
 public class estudiant {
+
     private String nom;
     private String dni;
     private llistaAssignatures llista;
-    
-    public estudiant (String nom , String dni){
+
+    public estudiant(String nom, String dni) {
         this.nom = nom;
         this.dni = dni;
         llista = new llistaAssignatures();
     }
-    
-    public String imprimirEstudiant(){
-        return "Estudiant:\n\nNOM : "+nom+"\nDNI : "+dni+"\n";
+
+    public String getNom() {
+        return this.nom;
     }
-    
+
+    public String getDni() {
+        return this.dni;
+    }
+
+    public String imprimirEstudiant() {
+        return "Estudiant:\n\nNOM : " + nom + "\nDNI : " + dni + "\n";
+    }
+
 }
