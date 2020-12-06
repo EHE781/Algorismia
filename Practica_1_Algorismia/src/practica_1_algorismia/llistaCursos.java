@@ -27,11 +27,11 @@ public class llistaCursos implements interficieLlista<curs>{
     @Override
     public curs trobar(String nom) {
         curs aux = primer;
-        while(!aux.nom.equals(nom) && aux != null){
+        while(!aux.nom.equals(nom) && aux.seg != null){
             aux = aux.seg;
         }
-        if(aux == null) return null;
-        else return aux;
+        if(aux.nom.equals(nom)) return aux;
+        else return null;
     }
 
     @Override
@@ -39,11 +39,11 @@ public class llistaCursos implements interficieLlista<curs>{
         curs aux,paux;
         paux = null;
         aux = primer;
-        while(!aux.nom.equals(nom) && aux != null){
+        while(!aux.nom.equals(nom) && aux.seg != null){
             paux = aux;
             aux = aux.seg;
         }
-        if(aux != null){
+        if(aux.nom.equals(nom)){
             paux.seg = aux.seg;
         }
     }
