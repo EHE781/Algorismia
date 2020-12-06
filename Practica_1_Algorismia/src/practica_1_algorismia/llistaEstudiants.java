@@ -65,6 +65,7 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
 
     @Override
     public void insertar(nodoEstudiant elem) {
+        boolean ficat = false;
         if (primer == null) {
             primer = elem;
         } else {
@@ -73,20 +74,27 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
             while (aux.seguent() != null) {
                 if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0) {
                     //Cas primer element llista
-                    if(ant==aux){
+                    if (ant == aux) {
                         primer = elem;
                         elem.setSeg(ant);
+                        ficat = true;
+                        break;
+                    } else {
+                        ant.setSeg(elem);
+                        elem.setSeg(aux);
+                        ficat = true;
                         break;
                     }
-                    ant.setSeg(elem);
-                    elem.setSeg(aux);
-                    break;
                 }
                 ant = aux;
                 aux = aux.seguent();
             }
             //Tant com si son iguals o el nou element es superior, el ficarem després de aux:
-                //If innecesari, més posat per el break;
+            //If innecesari, més posat per el break;
+            if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0 && !ficat) {
+                ant.setSeg(elem);
+                elem.setSeg(aux);
+            }
             if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) >= 0) {
                 aux.setSeg(elem);
             }
