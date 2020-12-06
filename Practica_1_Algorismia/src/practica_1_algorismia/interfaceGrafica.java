@@ -33,6 +33,7 @@ public class interfaceGrafica extends JFrame {
     private final String[] nom_elements = {"Matricular estudiant", "Eliminar estudiant",
         "Implementar assignatura", "Anular assignatura"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
+    private String imatgeLogo = "solusiones1.PNG";
 
     public interfaceGrafica() {
         this.setLayout(new BorderLayout());
@@ -52,7 +53,7 @@ public class interfaceGrafica extends JFrame {
         Image imatge = null;
         BufferedImage img = null;
         try {
-            imatge = ImageIO.read(new File("solusiones1.PNG"));
+            imatge = ImageIO.read(new File(imatgeLogo));
             img = (BufferedImage) imatge;
             img = resizeImage(img, 200, 100);
         } catch (IOException noImg) {
@@ -77,17 +78,23 @@ public class interfaceGrafica extends JFrame {
         JPanel elements = new JPanel();
         elements.setLayout(new GridLayout(BOTONS_ELEMENTS, 1));
         JPanel operacions = new JPanel();
-        ActionListener al = new ActionListener() {
+        JButton botonsElements[] = new JButton[BOTONS_ELEMENTS];
+        ActionListener accions[] = new ActionListener[BOTONS_ELEMENTS];
+        //faltan 3 actionListeners de las 3 acciones que faltan
+        ActionListener matricular = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println(actionEvent.getActionCommand());
+                
+                
             }
         };
-        JButton botonsElements[] = new JButton[BOTONS_ELEMENTS];
+        //meter en 1 2 3 lo que falta
+        accions[0]=matricular;
+        
         for (int i = 0; i < BOTONS_ELEMENTS; i++) {
             JButton boto = new JButton(nom_elements[i]);
             elements.add(boto);
             botonsElements[i] = boto;
-            boto.addActionListener(al);
+            boto.addActionListener(accions[i]);
         }
         this.add(elements, BorderLayout.WEST);
     }
