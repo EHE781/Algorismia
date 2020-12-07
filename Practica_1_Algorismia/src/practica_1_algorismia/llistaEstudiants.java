@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author tomeu
  */
-public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
+public class llistaEstudiants implements interficieLlista<estudiant> {
 
     private nodoEstudiant primer;
 
@@ -27,16 +27,16 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
         if (primer == null) {
             JOptionPane.showMessageDialog(null, "No existeix");
         } else {
-            if (primer.getEstudiant().getNom().equals(nom)) {
+            if (primer.getEstudiant().getDni().equals(nom)) {
                 primer = primer.seguent();
             } else {
                 //Cercar en tota la llista fins trobar nom o arribar al final
-                while (aux.seguent() != null && !aux.seguent().getEstudiant().getNom().equals(nom)) {
+                while (aux.seguent() != null && !aux.getEstudiant().getDni().equals(nom)) {
                     paux = aux;
                     aux = aux.seguent();
                 }
                 //Si es l'últim element no ha pogut trobar nom, pertant...
-                if (!aux.seguent().getEstudiant().getNom().equals(nom)) {
+                if (!aux.getEstudiant().getDni().equals(nom)) {
                     JOptionPane.showMessageDialog(null, "No existeix");
                     //Si no entra al if es perque ha trobat el nom
                 } else {
@@ -60,7 +60,8 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
     }
 
     @Override
-    public void insertar(nodoEstudiant elem) {
+    public void insertar(estudiant est) {
+        nodoEstudiant elem = new nodoEstudiant(est);
         if (trobar(elem.getEstudiant().getDni()) == null) {
             boolean ficat = false;
             if (primer == null) {
@@ -103,7 +104,7 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
     }
 
     @Override
-    public nodoEstudiant trobar(String dni) {
+    public estudiant trobar(String dni) {
         nodoEstudiant aux = primer;
         //Cas llista buida
         if (primer == null) {
@@ -119,7 +120,7 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
                 return null;
                 //Si no entra al if es perque ha trobat el nom
             } else {
-                return aux;
+                return aux.getEstudiant();
             }
         }
     }

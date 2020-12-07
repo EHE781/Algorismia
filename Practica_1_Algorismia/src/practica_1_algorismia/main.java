@@ -13,8 +13,7 @@ public class main {
 
     
     public static void main(String[] args) {
-        //mirar si va bien lista estudiantes
-        //interfaceGrafica finestra = new interfaceGrafica();
+        //mirar los de mayusculas/minusculas para la ordenacion de listas
     }
     
 }

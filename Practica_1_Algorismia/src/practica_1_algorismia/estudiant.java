@@ -32,5 +32,9 @@ public class estudiant {
     public String imprimirEstudiant() {
         return "Estudiant:\n\nNOM : " + nom + "\nDNI : " + dni + "\n";
     }
+    
+    public llistaAssignatures getLlistaAssignatures(){
+        return llista;
+    }
 
 }
