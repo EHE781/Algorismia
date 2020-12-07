@@ -14,10 +14,9 @@ public class main {
     
     public static void main(String[] args) {
         //Quedan hacer métodos funcionales de la lista de estudiantes
-            //Hechos, revisar el borrar que tengo dudas
             //Optimizar/simplificar el insertar, me ha quedado mas largo de lo esperado, eso si, funciona 
         //Mirar si estan bien la lista de assginaturas ( arrayList )
-            //Falta el método imprimir()
+            //Falta el método imprimir() --> ja esta
             //Lo demás lo veo bien(M)
         //hacer que insertar de los estudiantes ordene
         //pensar de mirar ArrayList.sort();
