@@ -45,73 +45,76 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
             }
         }
     }
-   
 
     @Override
     public String imprimir() {
         nodoEstudiant aux = primer;
         String impr = "";
-        while(aux != null){
+        while (aux != null) {
             estudiant aux1 = aux.getEstudiant();
             impr += aux1.imprimirEstudiant();
             impr += "\n";
             aux = aux.seguent();
         }
-        return impr; 
+        return impr;
     }
-    
 
     @Override
     public void insertar(nodoEstudiant elem) {
-        boolean ficat = false;
-        if (primer == null) {
-            primer = elem;
-        } else {
-            nodoEstudiant aux = primer;
-            nodoEstudiant ant = primer;
-            while (aux.seguent() != null) {
-                if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0) {
-                    //Cas primer element llista
-                    if (ant == aux) {
-                        primer = elem;
-                        elem.setSeg(ant);
-                        ficat = true;
-                        break;
-                    } else {
-                        ant.setSeg(elem);
-                        elem.setSeg(aux);
-                        ficat = true;
-                        break;
+        if (trobar(elem.getEstudiant().getDni()) == null) {
+            boolean ficat = false;
+            if (primer == null) {
+                primer = elem;
+            } else {
+                nodoEstudiant aux = primer;
+                nodoEstudiant ant = primer;
+                while (aux.seguent() != null) {
+                    if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0) {
+                        //Cas primer element llista
+                        if (ant == aux) {
+                            primer = elem;
+                            elem.setSeg(ant);
+                            ficat = true;
+                            break;
+                        } else {
+                            ant.setSeg(elem);
+                            elem.setSeg(aux);
+                            ficat = true;
+                            break;
+                        }
                     }
+                    ant = aux;
+                    aux = aux.seguent();
                 }
-                ant = aux;
-                aux = aux.seguent();
+                //Tant com si son iguals o el nou element es superior, el ficarem després de aux:
+                //If innecesari, més posat per el break;
+                if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0 && !ficat) {
+                    ant.setSeg(elem);
+                    elem.setSeg(aux);
+                }
+                if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) >= 0) {
+                    aux.setSeg(elem);
+                }
             }
-            //Tant com si son iguals o el nou element es superior, el ficarem després de aux:
-            //If innecesari, més posat per el break;
-            if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0 && !ficat) {
-                ant.setSeg(elem);
-                elem.setSeg(aux);
-            }
-            if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) >= 0) {
-                aux.setSeg(elem);
-            }
+        }else{
+            System.out.println("JA EXISTEIX");
         }
+
     }
 
     @Override
-    public nodoEstudiant trobar(String nom) {
+    public nodoEstudiant trobar(String dni) {
         nodoEstudiant aux = primer;
         //Cas llista buida
         if (primer == null) {
             return null;
         } else {
             //Cercar en tota la llista fins trobar nom o arribar al final
-            while (aux.seguent() != null && !aux.getEstudiant().getNom().equals(nom)) {
+            while (aux.seguent() != null && !aux.getEstudiant().getDni().equals(dni)) {
                 aux = aux.seguent();
             }
             //Si es l'últim element i no conté el nom cercat
-            if (aux.seguent() == null && !aux.getEstudiant().getNom().equals(nom)) {
+            if (aux.seguent() == null && !aux.getEstudiant().getDni().equals(dni)) {
                 JOptionPane.showMessageDialog(null, "No existeix");
                 return null;
                 //Si no entra al if es perque ha trobat el nom

@@ -18,20 +18,30 @@ public class llistaCursos implements interficieLlista<curs>{
 
     @Override
     public void insertar(curs elem) {
-        curs aux;
-        aux = primer;
-        primer = elem;
-        elem.seg = aux;
+        if(trobar(elem.nom) == null){
+            curs aux;
+            aux = primer;
+            primer = elem;
+            elem.seg = aux;
+        }else{
+            System.out.println("Element ja existeix");
+        }   
     }
 
     @Override
     public curs trobar(String nom) {
         curs aux = primer;
-        while(!aux.nom.equals(nom) && aux.seg != null){
-            aux = aux.seg;
+        if (primer != null) {
+            while (!aux.nom.equals(nom) && aux.seg != null) {
+                aux = aux.seg;
+            }
+            if (aux.nom.equals(nom)) {
+                return aux;
+            } else {
+                return null;
+            }
         }
-        if(aux.nom.equals(nom)) return aux;
-        else return null;
+        return null;
     }
 
     @Override
@@ -51,8 +61,11 @@ public class llistaCursos implements interficieLlista<curs>{
                     paux = aux;
                     aux = aux.seg;
                 }
-                    if(aux.nom.equals(nom)){
+                if(aux.nom.equals(nom)){
                     paux.seg = aux.seg;
+                }
+                else{
+                    System.out.println("Element no existeix");
                 }
             } 
         }     

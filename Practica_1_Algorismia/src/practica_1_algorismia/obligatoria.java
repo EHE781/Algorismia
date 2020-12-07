@@ -45,5 +45,9 @@ public class obligatoria extends assignatura{
     @Override
     public int getCodi() {
         return codi;
-    }   
+    }
+    @Override
+    public int compareTo(assignatura a){
+        return nom.compareTo(a.nom);
+    }
 }

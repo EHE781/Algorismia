@@ -10,7 +10,7 @@ package practica_1_algorismia;
  * @author tomeu
  */
 public class optativa extends assignatura{
-    enum perfil {teoric,practica}
+    public enum perfil {teoric,practica}
     private perfil per;
     
     public optativa(){
@@ -23,24 +23,31 @@ public class optativa extends assignatura{
     public String imprimir() {
         return "ASSIGNATURA OPTATIVA :\n\nNOM : "+nom+"\nCODI : "+codi+"\nPERFIL : "+per.name()+"\n";
     }
-
     @Override
     public void posarNom(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.nom = nom;
     }
 
     @Override
     public void posarCodi(int codi) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.codi = codi;
     }
 
     @Override
     public String getNom() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return nom;
     }
 
     @Override
     public int getCodi() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return codi;
+    }
+
+    @Override
+    public int compareTo(assignatura a){
+        return nom.compareTo(a.nom);
+    }
+    public void posarPerfil(perfil a){
+        per = a;
     }
 }
