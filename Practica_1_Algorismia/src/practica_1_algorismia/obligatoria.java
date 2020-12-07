@@ -45,6 +45,5 @@ public class obligatoria extends assignatura{
     @Override
     public int getCodi() {
         return codi;
-    }
-    
+    }   
 }

@@ -39,13 +39,23 @@ public class llistaCursos implements interficieLlista<curs>{
         curs aux,paux;
         paux = null;
         aux = primer;
-        while(!aux.nom.equals(nom) && aux.seg != null){
-            paux = aux;
-            aux = aux.seg;
+        if(primer == null){
+            System.out.println("Llista buida");
         }
-        if(aux.nom.equals(nom)){
-            paux.seg = aux.seg;
-        }
+        else{
+            if(primer.nom.equals(nom)){
+                primer = primer.seg;
+            }
+            else{
+                while(!aux.nom.equals(nom) && aux.seg != null){
+                    paux = aux;
+                    aux = aux.seg;
+                }
+                    if(aux.nom.equals(nom)){
+                    paux.seg = aux.seg;
+                }
+            } 
+        }     
     }
 
     @Override
@@ -66,6 +76,11 @@ public class llistaCursos implements interficieLlista<curs>{
             aux = aux.seg;
         }
         return res;
+    }
+
+    @Override
+    public boolean buida() {
+        return primer == null;
     }
 
    

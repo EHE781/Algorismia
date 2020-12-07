@@ -6,6 +6,9 @@
 package practica_1_algorismia;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,7 +24,8 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
         llista = new ArrayList<>();
     }
 
-    public boolean vacia() {
+    @Override
+    public boolean buida() {
         return llista.isEmpty();
     }
     @Override
@@ -45,25 +49,25 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
         return -1;
     }
 
-    private void intercambiar(int pos1, int pos2) {
-        assignatura aux;
-        if ((((llista.size()) > pos1) && (pos1 >= 0)) && (((llista.size()) > pos2) && (pos2 >= 0))) {
-            aux = llista.get(pos1);
-            llista.set(pos1, llista.get(pos2));
-            llista.set(pos2, aux);
-        } else {
-            System.err.println("No existe");
-            JOptionPane.showMessageDialog(null, "No existeix");
-        }
-    }
+//    private void intercambiar(int pos1, int pos2) {
+//        assignatura aux;
+//        if ((((llista.size()) > pos1) && (pos1 >= 0)) && (((llista.size()) > pos2) && (pos2 >= 0))) {
+//            aux = llista.get(pos1);
+//            llista.set(pos1, llista.get(pos2));
+//            llista.set(pos2, aux);
+//        } else {
+//            System.err.println("No existe");
+//            JOptionPane.showMessageDialog(null, "No existeix");
+//        }
+//    }
 
-    public boolean buscar(assignatura elemento) {
-        return llista.contains(elemento);
-    }
+//    public boolean buscar(assignatura elemento) {
+//        return llista.contains(elemento);
+//    }
 
-    public int numElementos() {
-        return llista.size();
-    }
+//    public int numElementos() {
+//        return llista.size();
+//    }
 
     @Override
     public String imprimir() {

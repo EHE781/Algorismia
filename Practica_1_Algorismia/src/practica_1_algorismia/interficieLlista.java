@@ -14,4 +14,5 @@ public interface interficieLlista <object>{
     public object trobar(String nom);
     public void borrar(String nom);
     public String imprimir();
+    public boolean buida();
 }

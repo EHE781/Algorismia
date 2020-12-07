@@ -9,10 +9,10 @@ package practica_1_algorismia;
  *
  * @author tomeu
  */
-public abstract class assignatura implements interficieVariables {
+public abstract class assignatura implements interficieVariables{
     protected String nom;
     protected int codi;
     protected llistaEstudiants llista;
     
-    public abstract String imprimir(); 
+    public abstract String imprimir();
 }

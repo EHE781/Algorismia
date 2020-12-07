@@ -22,41 +22,30 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
     @Override
     public void borrar(String nom) {
         nodoEstudiant aux = primer;
+        nodoEstudiant paux = null;
         //Cas llista buida
         if (primer == null) {
             JOptionPane.showMessageDialog(null, "No existeix");
         } else {
-            //Cas primer element == nom
-            if (primer.getEstudiant().getNom().equals(nom) && primer.seguent() == null) {
-                primer = null;
+            if (primer.getEstudiant().getNom().equals(nom)) {
+                primer = primer.seguent();
             } else {
-                if (primer.getEstudiant().getNom().equals(nom) && primer.seguent() != null) {
-                    primer = primer.seguent();
+                //Cercar en tota la llista fins trobar nom o arribar al final
+                while (aux.seguent() != null && !aux.seguent().getEstudiant().getNom().equals(nom)) {
+                    paux = aux;
+                    aux = aux.seguent();
+                }
+                //Si es l'últim element no ha pogut trobar nom, pertant...
+                if (!aux.seguent().getEstudiant().getNom().equals(nom)) {
+                    JOptionPane.showMessageDialog(null, "No existeix");
+                    //Si no entra al if es perque ha trobat el nom
                 } else {
-                    //Cercar en tota la llista fins trobar nom o arribar al final
-                    while (aux.seguent() != null && !aux.seguent().getEstudiant().getNom().equals(nom)) {
-                        aux = aux.seguent();
-                    }
-                    //Si es l'últim element no ha pogut trobar nom, pertant...
-                    if (aux.seguent() == null) {
-                        JOptionPane.showMessageDialog(null, "No existeix");
-                        //Si no entra al if es perque ha trobat el nom
-                    } else {
-                        //Cas ultim node s'ha de borrar
-                        if (aux.seguent().seguent() == null) {
-                            nodoEstudiant borrar = aux.seguent();
-                            borrar = null;
-                            //Cas element entre altres dos elements
-                        } else {
-                            nodoEstudiant borrar = aux.seguent();
-                            aux.setSeg(borrar.seguent());
-                            borrar = null;
-                        }
-                    }
+                    paux.setSeg(aux.seguent());
                 }
             }
         }
     }
+   
 
     @Override
     public String imprimir() {
@@ -130,5 +119,10 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
                 return aux;
             }
         }
+    }
+
+    @Override
+    public boolean buida() {
+        return primer == null;
     }
 }
