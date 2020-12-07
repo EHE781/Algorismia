@@ -22,7 +22,7 @@ public class main {
         //hacer que insertar de los estudiantes ordene
         //pensar de mirar ArrayList.sort();
         //Mirar si todos los métodos funcionales de todas las clases funcionan correctamente ( sobretodo de las listas )
-   
+        //PONER JOPTIONPANES!!!!!!!!!!
         
         //interfaceGrafica finestra = new interfaceGrafica();
     }
