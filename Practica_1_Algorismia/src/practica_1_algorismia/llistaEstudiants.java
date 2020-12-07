@@ -60,8 +60,17 @@ public class llistaEstudiants implements interficieLlista<nodoEstudiant> {
 
     @Override
     public String imprimir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        nodoEstudiant aux = primer;
+        String impr = "";
+        while(aux != null){
+            estudiant aux1 = aux.getEstudiant();
+            impr += aux1.imprimirEstudiant();
+            impr += "\n";
+            aux = aux.seguent();
+        }
+        return impr; 
     }
+    
 
     @Override
     public void insertar(nodoEstudiant elem) {
