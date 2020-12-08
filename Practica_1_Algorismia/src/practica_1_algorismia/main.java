@@ -15,7 +15,6 @@ public class main {
         //mirar los de mayusculas/minusculas para la ordenacion de listas
             //Hecho para llistaEstudiants, ordena sin errores
             //Hecho para llistaAssignatures, ordena sin errores
-            //falta para llistaCursos, si es que no está
 
             
         /*LO DEJO POR SI QUEREIS COMPROBARLO TAMBIEN
