@@ -21,8 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -33,7 +36,7 @@ public class interfaceGrafica extends JFrame {
     private final String[] nom_elements = {"Matricular estudiant", "Eliminar estudiant",
         "Implementar assignatura", "Anular assignatura"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
-    private String imatgeLogo = "solusiones1.PNG";
+    private String imatgeLogo = "logo.png";
 
     public interfaceGrafica() {
         this.setLayout(new BorderLayout());
@@ -83,13 +86,14 @@ public class interfaceGrafica extends JFrame {
         //faltan 3 actionListeners de las 3 acciones que faltan
         ActionListener matricular = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                
-                
+                String dades[] = obrirEmergentEstudiant();
+                main.matricularEstudiant(dades[0], dades[1]);
             }
+
         };
         //meter en 1 2 3 lo que falta
-        accions[0]=matricular;
-        
+        accions[0] = matricular;
+
         for (int i = 0; i < BOTONS_ELEMENTS; i++) {
             JButton boto = new JButton(nom_elements[i]);
             elements.add(boto);
@@ -109,5 +113,69 @@ public class interfaceGrafica extends JFrame {
         graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
         graphics2D.dispose();
         return resizedImage;
+    }
+    //Retorna el codi o -1 si no es fica cap codi
+    public int obrirEmergentBorrarAssignatura() {
+        JTextField codi = new JTextField();
+        Object dades[] = {
+            "Codi assignatura: ", codi
+        };
+        JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
+        //Si codi es null, retornam -1
+        return codi == null ? -1 : Integer.parseInt(codi.getText());
+    }
+
+    public String[] obrirEmergentEstudiant() {
+        JTextField nom = new JTextField();
+        JTextField dni = new JTextField();
+        JTextField assignatura = new JTextField();
+        Object camps[] = {
+            "Nom: ", nom,
+            "Dni: ", dni,
+            "Assignatura: ", assignatura 
+        };
+        JOptionPane.showConfirmDialog(null, camps, "Introdueix les dades", JOptionPane.OK_CANCEL_OPTION);
+        String respostes[] = {nom.getText(), dni.getText()};
+        return respostes;
+    }
+
+    public String[] obrirEmergentAssignatura() {
+        JTextField nom = new JTextField();
+        JTextField codi = new JTextField();
+        boolean batxNfp = false;
+        String batx[] = new String[batxiller.especialitat.values().length];
+        String fp[] = new String[FP.especialitat.values().length];
+        int cont = 0;
+        String tipus[] = {"Batxiller", "FP"};
+        JList lista = new JList<String>(tipus);
+        JScrollPane eleccio = new JScrollPane(lista);
+        JScrollPane especialitat = null;
+        JOptionPane.showConfirmDialog(null, eleccio, "Tipus", JOptionPane.OK_CANCEL_OPTION);
+        JList listaBatx = new JList(batx);
+        JList listaFp = new JList(fp);
+        if (lista.getSelectedValue().equals(tipus[0])) {
+            for (batxiller.especialitat i : batxiller.especialitat.values()) {
+                batx[cont] = i.toString();
+                cont++;
+            }
+            especialitat = new JScrollPane(listaBatx);
+            batxNfp = true;
+        }
+        if (lista.getSelectedValue().equals(tipus[1])) {
+            for (FP.especialitat i : FP.especialitat.values()) {
+                fp[cont] = i.toString();
+                cont++;
+            }
+            especialitat = new JScrollPane(listaFp);
+        }
+        Object demanar[] = {
+            "Nom: ", nom,
+            "Codi: ", codi,
+            "Especialitat: ", especialitat
+        };
+        JOptionPane.showConfirmDialog(null, demanar, "Especialitat", JOptionPane.OK_CANCEL_OPTION);
+        String dades[] = {nom.getText(), codi.getText(), batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString()};
+
+        return dades;
     }
 }
