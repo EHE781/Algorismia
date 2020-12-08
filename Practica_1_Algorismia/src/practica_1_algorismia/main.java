@@ -15,7 +15,8 @@ import javax.swing.JTextField;
  * @author emanu
  */
 public class main {
-
+    private llistaCursos cursos = new llistaCursos();
+    private llistaEstudiants estudiants = new llistaEstudiants();
     public static void main(String[] args) {
     //mirar los de mayusculas/minusculas para la ordenacion de listas
         //Hecho para llistaEstudiants, ordena sin errores
@@ -52,12 +53,21 @@ public class main {
         System.out.println(l.imprimir());
          */
     }
-
-    static void matricularEstudiant() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//tengo un gran problema con esto, no quiero que sean static pero desde interfaceGrafica llora
+//si no los hago static, hay que mirar de arreglaro
+    static void matricularEstudiant(String nom, String dni, String codiAssignatura) {
+        
     }
 
-    static void matricularEstudiant(String dade, String dade0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    static void altaAssignatura(int tipus, String string, String string0, String string1) {
+
     }
+
+    static void baixaAssignatura(int i) {
+
+    }
+    static void altaCurs(String d, String d1){
+        
+    }
+
 }

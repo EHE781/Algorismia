@@ -15,7 +15,9 @@ public class llistaCursos implements interficieLlista<curs>{
     public llistaCursos(){
         primer = null;
     }
-
+    public curs getPrimer(){
+        return this.primer;
+    }
     @Override
     public void insertar(curs elem) {
         if(trobar(elem.nom) == null){
