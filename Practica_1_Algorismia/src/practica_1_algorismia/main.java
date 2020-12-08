@@ -15,10 +15,22 @@ import javax.swing.JTextField;
  * @author emanu
  */
 public class main {
-    private llistaCursos cursos = new llistaCursos();
-    private llistaEstudiants estudiants = new llistaEstudiants();
+
+    private static llistaCursos cursos = new llistaCursos();
+    private static llistaEstudiants estudiants = new llistaEstudiants();
+        static batxiller b = new batxiller();
+        static obligatoria a = new obligatoria();
+        static estudiant comemeLosBoliicats = new estudiant("Ojete","666Y");
     public static void main(String[] args) {
-    //mirar los de mayusculas/minusculas para la ordenacion de listas
+        main start = new main();
+        a.codi=2;
+        a.nom="Catala";
+        b.getLlistaAssign().insertar(a);
+        cursos.insertar(b);
+        estudiants.insertar(comemeLosBoliicats);
+        interfaceGrafica ig = new interfaceGrafica(start);
+        
+        //mirar los de mayusculas/minusculas para la ordenacion de listas
         //Hecho para llistaEstudiants, ordena sin errores
         //Hecho para llistaAssignatures, ordena sin errores
 
@@ -31,11 +43,8 @@ public class main {
         skipear eso). Después se inicia el programa, que tendrá botones con las funciones pedidas
         por el señor Fiel Gabriol, donde cada botón abre su correspondiente ventanita emergente para
         poder completar la operación(usar ventanas emergentes ahorra un 70% de trabajo con gráficos).
-        */
-        
-        
-        
-        /*LO DEJO POR SI QUEREIS COMPROBARLO TAMBIEN
+         */
+ /*LO DEJO POR SI QUEREIS COMPROBARLO TAMBIEN
         llistaEstudiants st = new llistaEstudiants();
         llistaAssignatures l = new llistaAssignatures();
         String noms[] = {"Alba","Marcos","esteve","willy","bernat","Bernat","kola","Jola","Koala","Jusep"};
@@ -53,21 +62,66 @@ public class main {
         System.out.println(l.imprimir());
          */
     }
-//tengo un gran problema con esto, no quiero que sean static pero desde interfaceGrafica llora
-//si no los hago static, hay que mirar de arreglaro
-    static void matricularEstudiant(String nom, String dni, String codiAssignatura) {
-        
+
+    void matricularEstudiant(String nom, String dni, String codiAssignatura) {
+        curs aux = cursos.getPrimer();
+        boolean matriculat = false;
+        while (aux != null && !matriculat) {
+            if (aux instanceof batxiller) {
+                batxiller auxB = (batxiller) aux;
+                for (int i = 0; i < auxB.getLlistaAssign().size(); i++) {
+                    if (auxB.getLlistaAssign().trobar(codiAssignatura) != null) {
+                        //mirar si existe estudiante
+                        if (auxB.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) != null) {
+                            break;
+                        } else {
+                            //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
+                            estudiant est = estudiants.trobar(dni);
+                            auxB.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
+                            est.getLlistaAssignatures().insertar(auxB.getLlistaAssign().trobar(codiAssignatura));
+                            matriculat = true;
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                FP auxFP = (FP) aux;
+                for (int i = 0; i < auxFP.getLlistaAssign().size(); i++) {
+                    if (auxFP.getLlistaAssign().trobar(codiAssignatura) != null) {
+                        if (auxFP.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) != null) {
+                            break;
+                        } else {
+                            //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
+                            estudiant est = estudiants.trobar(dni);
+                            auxFP.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
+                            est.getLlistaAssignatures().insertar(auxFP.getLlistaAssign().trobar(codiAssignatura));
+                            matriculat = true;
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            aux = aux.getSeg();
+        }
+        if(!matriculat){
+            JOptionPane.showMessageDialog(null, "Codi incorrecte o alumne ja matriculat!");
+        }
     }
 
-    static void altaAssignatura(int tipus, String string, String string0, String string1) {
+    void altaAssignatura(int tipus, String string, String string0, String string1) {
 
     }
 
-    static void baixaAssignatura(int i) {
+    void baixaAssignatura(int i) {
 
     }
-    static void altaCurs(String d, String d1){
-        
+
+    void altaCurs(String d, String d1) {
+
     }
 
 }

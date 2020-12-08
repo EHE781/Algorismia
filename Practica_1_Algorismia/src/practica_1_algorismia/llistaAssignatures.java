@@ -15,32 +15,26 @@ import javax.swing.JOptionPane;
  *
  * @author Usuario
  */
-public class llistaAssignatures implements interficieLlista<assignatura> {
+public class llistaAssignatures extends ArrayList<assignatura> implements interficieLlista<assignatura>{
     //Exception ListaVacia,posicionInexistente;
-
-    public ArrayList<assignatura> llista;
-
-    public llistaAssignatures() {
-        llista = new ArrayList<>();
-    }
 
     @Override
     public boolean buida() {
-        return llista.isEmpty();
+        return this.isEmpty();
     }
 
     @Override
-    public assignatura trobar(String nom) {
-        int pos = buscarPos(nom);
-        if (((llista.size()) > pos) && (pos >= 0)) {
-            return llista.get(pos);
+    public assignatura trobar(String codi) {
+        int pos = buscarPos(Integer.parseInt(codi));
+        if (((this.size()) > pos) && (pos >= 0)) {
+            return this.get(pos);
         }
         return null;
     }
 
-    private int buscarPos(String nom) {
-        for (int i = 0; i < llista.size(); i++) {
-            if (nom == llista.get(i).nom) {
+    private int buscarPos(int codi) {
+        for (int i = 0; i < this.size(); i++) {
+            if (codi == this.get(i).codi) {
                 return i;
             }
         }
@@ -50,8 +44,8 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
     @Override
     public String imprimir() {
         String res = "";
-        for (int i = 0; i < llista.size(); i++) {
-            assignatura aux = llista.get(i);
+        for (int i = 0; i < this.size(); i++) {
+            assignatura aux = this.get(i);
             if (aux instanceof optativa) {
                 optativa aux1 = (optativa) aux;
                 res += aux1.imprimir();
@@ -64,10 +58,10 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
     }
 
     @Override
-    public void borrar(String nom) {
-        int pos = buscarPos(nom);
-        if (((llista.size()) > pos) && (pos >= 0)) {
-            llista.remove(pos);
+    public void borrar(String codi) {
+        int pos = buscarPos(Integer.parseInt(codi));
+        if (((this.size()) > pos) && (pos >= 0)) {
+            this.remove(pos);
         } else {
             System.err.println("No existe");
             //JOptionPane.showMessageDialog(null, "No existeix");
@@ -76,9 +70,9 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
 
     @Override
     public void insertar(assignatura elemento) {
-        if (trobar(elemento.nom) == null) {
-            llista.add(elemento);
-            Collections.sort(llista, new Comparator<assignatura>() {
+        if (trobar(String.valueOf(elemento.codi)) == null) {
+            this.add(elemento);
+            Collections.sort(this, new Comparator<assignatura>() {
                 @Override
                 public int compare(assignatura a1, assignatura a2) {
                     return a1.getNom().toLowerCase().compareTo(a2.getNom().toLowerCase());

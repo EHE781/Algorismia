@@ -37,4 +37,8 @@ public class estudiant {
         return llista;
     }
 
+    void setNom(String willyrex) {
+        this.nom = willyrex;
+    }
+
 }

@@ -37,8 +37,10 @@ public class interfaceGrafica extends JFrame {
         "Donar de baixa curs", "Donar de baixa assignatura"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
     private String imatgeLogo = "logo.png";
+    private main principal;
 
-    public interfaceGrafica() {
+    public interfaceGrafica(main principal) {
+        this.principal = principal;
         this.setLayout(new BorderLayout());
         this.inicialitzaNord();
         this.inicialitzaOest();
@@ -89,7 +91,7 @@ public class interfaceGrafica extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String dades[] = obrirEmergentEstudiant();
-                main.matricularEstudiant(dades[0], dades[1], dades[2]);
+                principal.matricularEstudiant(dades[0], dades[1], dades[2]);
             }
 
         };
@@ -110,7 +112,7 @@ public class interfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 int codi = obrirEmergentBorrarAssignatura();
                 if (codi != -1) {
-                    main.baixaAssignatura(codi);
+                    principal.baixaAssignatura(codi);
                 } else {
                     JOptionPane.showMessageDialog(null, "No s'ha detectat cap codi!");
                 }
@@ -195,13 +197,13 @@ public class interfaceGrafica extends JFrame {
         } else if (listaTipusCurs.getSelectedValue().toString().equals(nomTipusCurs[1])) {
             tipus = 1;
         }
-        main.altaCurs(listaTipusCurs.getSelectedValue().toString(), batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString());
+        principal.altaCurs(listaTipusCurs.getSelectedValue().toString(), batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString());
         if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
 
             for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
                 try {
                     String nova[] = obrirEmergentAssignatura();
-                    main.altaAssignatura(tipus, nova[0], nova[1], nova[2]);
+                    principal.altaAssignatura(tipus, nova[0], nova[1], nova[2]);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No es possible!");
                 }
@@ -260,7 +262,7 @@ public class interfaceGrafica extends JFrame {
             "Assignatura: ", assignatura
         };
         JOptionPane.showConfirmDialog(null, camps, "Introdueix les dades", JOptionPane.OK_CANCEL_OPTION);
-        String respostes[] = {nom.getText(), dni.getText()};
+        String respostes[] = {nom.getText(), dni.getText(), assignatura.getText()};
         return respostes;
     }
 
