@@ -78,7 +78,12 @@ public class llistaAssignatures implements interficieLlista<assignatura> {
     public void insertar(assignatura elemento) {
         if (trobar(elemento.nom) == null) {
             llista.add(elemento);
-            Collections.sort(llista);
+            Collections.sort(llista, new Comparator<assignatura>() {
+                @Override
+                public int compare(assignatura a1, assignatura a2) {
+                    return a1.getNom().toLowerCase().compareTo(a2.getNom().toLowerCase());
+                }
+            });
         } else {
             System.out.println("JA EXISTEIX");
         }

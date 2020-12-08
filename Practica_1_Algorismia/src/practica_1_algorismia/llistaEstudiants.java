@@ -70,7 +70,7 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
                 nodoEstudiant aux = primer;
                 nodoEstudiant ant = primer;
                 while (aux.seguent() != null) {
-                    if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0) {
+                    if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) < 0) {
                         //Cas primer element llista
                         if (ant == aux) {
                             primer = elem;
@@ -89,11 +89,11 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
                 }
                 //Tant com si son iguals o el nou element es superior, el ficarem després de aux:
                 //If innecesari, més posat per el break;
-                if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) < 0 && !ficat) {
+                if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) < 0 && !ficat) {
                     ant.setSeg(elem);
                     elem.setSeg(aux);
                 }
-                if ((elem.getEstudiant().getNom().compareTo(aux.getEstudiant().getNom())) >= 0) {
+                if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) >= 0) {
                     aux.setSeg(elem);
                 }
             }
@@ -116,7 +116,7 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
             }
             //Si es l'últim element i no conté el nom cercat
             if (aux.seguent() == null && !aux.getEstudiant().getDni().equals(dni)) {
-                JOptionPane.showMessageDialog(null, "No existeix");
+                //JOptionPane.showMessageDialog(null, "No existeix");
                 return null;
                 //Si no entra al if es perque ha trobat el nom
             } else {
