@@ -158,9 +158,15 @@ public class interfaceGrafica extends JFrame {
     public void obrirEmergentAltaCurs() {
         JTextField nr = new JTextField();
         String[] nomTipusCurs = {"Batxiller", "FP"};
+        String nomEspecialitat = "";
         JList listaTipusCurs = new JList<String>(nomTipusCurs);
         boolean batxNfp = false;
         JScrollPane tipusCurs = new JScrollPane(listaTipusCurs);
+        Object info[] = {
+            "Del tipus: ", tipusCurs,
+            "Numero assignatures: ", nr
+        };
+        int res = JOptionPane.showConfirmDialog(null, info, "Informació", JOptionPane.OK_CANCEL_OPTION);
         String batx[] = new String[batxiller.especialitat.values().length];
         String fp[] = new String[FP.especialitat.values().length];
         int cont = 0;
@@ -182,14 +188,9 @@ public class interfaceGrafica extends JFrame {
             }
             especialitat = new JScrollPane(listaFp);
         }
-        Object info[] = {
-            "Del tipus: ", tipusCurs,
-            "Numero assignatures: ", nr
-        };
         Object enumerat[] = {
             "Especialitat: ", especialitat
         };
-        int res = JOptionPane.showConfirmDialog(null, info, "Informació", JOptionPane.OK_CANCEL_OPTION);
         JOptionPane.showConfirmDialog(null, enumerat, "Especialitat", JOptionPane.OK_CANCEL_OPTION);
         int tipus = -1;
         if (listaTipusCurs.getSelectedValue().toString().equals(nomTipusCurs[0])) {
@@ -197,16 +198,20 @@ public class interfaceGrafica extends JFrame {
         } else if (listaTipusCurs.getSelectedValue().toString().equals(nomTipusCurs[1])) {
             tipus = 1;
         }
-        principal.altaCurs(listaTipusCurs.getSelectedValue().toString(), batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString());
+        nomEspecialitat = batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString();
+        principal.altaCurs(listaTipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase());
         if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
+            try {
+                for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
 
-            for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
-                try {
                     String nova[] = obrirEmergentAssignatura();
-                    principal.altaAssignatura(tipus, nova[0], nova[1], nova[2]);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "No es possible!");
+                    //en tipus es si es de batxiller o FP
+                    principal.altaAssignatura(tipus, nomEspecialitat, nova[0], nova[1], nova[2], nova[3]);
+
                 }
+                System.out.println("Fin");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "No es possible!");
             }
         }
     }
@@ -319,25 +324,39 @@ public class interfaceGrafica extends JFrame {
     public String[] obrirEmergentAssignatura() {
         JTextField nom = new JTextField();
         JTextField codi = new JTextField();
+        JTextField credits = new JTextField();
         String tipusAssign[] = {"Obligatoria", "Optativa"};
         JList oblOpt = new JList<String>(tipusAssign);
         JScrollPane obl_opt = new JScrollPane(oblOpt);
-        Object demanar[] = {
-            "Nom: ", nom,
-            "Codi: ", codi,
-            "Tipus: ", obl_opt
-        };
-        int res = JOptionPane.showConfirmDialog(null, demanar, "Assignatura", JOptionPane.OK_CANCEL_OPTION);
-        if (res == JOptionPane.OK_OPTION) {
-            String dades[] = {
-                nom.getText(),
-                codi.getText(),
-                oblOpt.getSelectedValue().toString()
-            };
+        String perfils[] = {"Teoric", "Practica"};
+        JList perfilOptativa = new JList(perfils);
+        JScrollPane perfil = new JScrollPane(perfilOptativa);
+        int err = JOptionPane.showConfirmDialog(null, obl_opt, "Tipus?", JOptionPane.OK_CANCEL_OPTION);
+        if (err == JOptionPane.OK_OPTION && oblOpt.getSelectedValue() != null) {
 
-            return dades;
-        } else {
-            return null;
+            boolean obligatoria = true;
+            if (oblOpt.getSelectedValue().toString().equals(tipusAssign[1])) {
+                obligatoria = false;
+            }
+            Object demanar[] = {
+                "Nom: ", nom,
+                "Codi: ", codi,
+                obligatoria ? "Crèdits" : "Perfil", obligatoria ? credits : perfil
+            };
+            int res = JOptionPane.showConfirmDialog(null, demanar, "Assignatura", JOptionPane.OK_CANCEL_OPTION);
+            if (res == JOptionPane.OK_OPTION) {
+                String dades[] = {
+                    nom.getText().toLowerCase(),
+                    codi.getText().toLowerCase(),
+                    oblOpt.getSelectedValue().toString().toLowerCase(),
+                    obligatoria ? credits.getText().toLowerCase() : perfilOptativa.getSelectedValue().toString().toLowerCase()
+                };
+
+                return dades;
+            } else {
+                return null;
+            }
         }
+        return null;
     }
 }

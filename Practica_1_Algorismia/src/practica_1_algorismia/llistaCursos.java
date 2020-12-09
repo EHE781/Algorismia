@@ -11,7 +11,6 @@ package practica_1_algorismia;
  */
 public class llistaCursos implements interficieLlista<curs>{
     private curs primer;
-    
     public llistaCursos(){
         primer = null;
     }

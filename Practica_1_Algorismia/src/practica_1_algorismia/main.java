@@ -18,18 +18,12 @@ public class main {
 
     private static llistaCursos cursos = new llistaCursos();
     private static llistaEstudiants estudiants = new llistaEstudiants();
-        static batxiller b = new batxiller();
-        static obligatoria a = new obligatoria();
-        static estudiant comemeLosBoliicats = new estudiant("Ojete","666Y");
+
     public static void main(String[] args) {
         main start = new main();
-        a.codi=2;
-        a.nom="Catala";
-        b.getLlistaAssign().insertar(a);
-        cursos.insertar(b);
-        estudiants.insertar(comemeLosBoliicats);
+
         interfaceGrafica ig = new interfaceGrafica(start);
-        
+
         //mirar los de mayusculas/minusculas para la ordenacion de listas
         //Hecho para llistaEstudiants, ordena sin errores
         //Hecho para llistaAssignatures, ordena sin errores
@@ -44,23 +38,8 @@ public class main {
         por el señor Fiel Gabriol, donde cada botón abre su correspondiente ventanita emergente para
         poder completar la operación(usar ventanas emergentes ahorra un 70% de trabajo con gráficos).
          */
- /*LO DEJO POR SI QUEREIS COMPROBARLO TAMBIEN
-        llistaEstudiants st = new llistaEstudiants();
-        llistaAssignatures l = new llistaAssignatures();
-        String noms[] = {"Alba","Marcos","esteve","willy","bernat","Bernat","kola","Jola","Koala","Jusep"};
-        for (int i = 0; i < 10; i++) {
-            optativa b = new optativa();
-            b.nom = noms[i];
-            b.codi = i*5;
-            b.posarPerfil(optativa.perfil.teoric);
-            assignatura k = (assignatura) b;
-            st.insertar(new estudiant(noms[i],Integer.toString(i)+"84854Y"));
-            l.insertar(k);
-        }
-        System.out.println(st.imprimir());
-        System.out.println("----------------------------------------------------");
-        System.out.println(l.imprimir());
-         */
+        //ALTA CURS Y ALTA ASSIGNATURA FUNCIONAN no diré perfecto pq faltan controles de exceptions,
+        //pero si eres usuario no tocon funcionan.
     }
 
     void matricularEstudiant(String nom, String dni, String codiAssignatura) {
@@ -107,21 +86,89 @@ public class main {
             }
             aux = aux.getSeg();
         }
-        if(!matriculat){
+        if (!matriculat) {
             JOptionPane.showMessageDialog(null, "Codi incorrecte o alumne ja matriculat!");
         }
     }
+//cuando se da de alta una assignatura se mira(es un metodo de ayuda, se usa en dar de alta un curso)
+    //si ya existe(ya dada de alta)
+    //una asignatura SOLO se da de alta en conjunto con otras en un mismo curso, por lo que se crea
+    //si aun no está creado
+    //si no se da de alta en el curso que le es asignado, tipus devuelve:
+    //0 si es bachiller, 1 si es FP
+    //c_t val credits si es obligatoria i tipus si es optativa
 
-    void altaAssignatura(int tipus, String string, String string0, String string1) {
-
+    void altaAssignatura(int curs, String especialitat, String nom, String codi, String tipus, String c_t) {
+        curs aux = cursos.getPrimer();
+        boolean cursTrobat = false;
+        if (curs == 0) {
+            while (aux != null && !cursTrobat) {
+                if (aux instanceof batxiller) {
+                    batxiller auxB = (batxiller) aux;
+                    if (auxB.getEspecialitat() == batxiller.especialitat.valueOf(especialitat)) {
+                        cursTrobat = true;
+                        if (tipus.equals("obligatoria")) {
+                            obligatoria assignatura = new obligatoria();
+                            assignatura.posarNom(nom);
+                            assignatura.posarCodi(Integer.parseInt(codi));
+                            assignatura.setCredits(Integer.parseInt(c_t));
+                            auxB.getLlistaAssign().insertar(assignatura);
+                        } else {
+                            optativa assignatura = new optativa();
+                            assignatura.posarNom(nom);
+                            assignatura.posarCodi(Integer.parseInt(codi));
+                            assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
+                            auxB.getLlistaAssign().insertar(assignatura);
+                        }
+                    }
+                }
+                aux = aux.getSeg();
+            }
+        } else {
+            while (aux != null && !cursTrobat) {
+                if (aux instanceof FP) {
+                    FP auxFp = (FP) aux;
+                    if (auxFp.getEspecialitat() == FP.especialitat.valueOf(especialitat)) {
+                        cursTrobat = true;
+                        if (tipus.equals("obligatoria")) {
+                            obligatoria assignatura = new obligatoria();
+                            assignatura.posarNom(nom);
+                            assignatura.posarCodi(Integer.parseInt(codi));
+                            assignatura.setCredits(Integer.parseInt(c_t));
+                            auxFp.getLlistaAssign().insertar(assignatura);
+                        } else {
+                            optativa assignatura = new optativa();
+                            assignatura.posarNom(nom);
+                            assignatura.posarCodi(Integer.parseInt(codi));
+                            assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
+                            auxFp.getLlistaAssign().insertar(assignatura);
+                        }
+                    }
+                }
+                aux = aux.getSeg();
+            }
+        }
     }
 
-    void baixaAssignatura(int i) {
+    void baixaAssignatura(int i
+    ) {
 
     }
-
-    void altaCurs(String d, String d1) {
-
+//falta poner un sistema de codi, no 2020 
+    void altaCurs(String tipus, String especialitat) {
+        if (tipus.equals("batxiller")) {
+            batxiller b = new batxiller();
+            b.setEspecialitat(batxiller.especialitat.valueOf(especialitat));
+            b.posarNom("Curs de " + especialitat + " de batxiller");
+            b.posarCodi(Integer.parseInt("2020"));
+            cursos.insertar((curs) b);
+        } else {
+            FP fp = new FP();
+            fp.setEspecialitat(FP.especialitat.valueOf(especialitat));
+            fp.posarNom("Curs de " + especialitat + " de FP");
+            fp.posarCodi(Integer.parseInt("2020"));
+            cursos.insertar((curs) fp);
+        }
     }
 
 }
