@@ -96,8 +96,14 @@ public class main {
     //si aun no está creado
     //si no se da de alta en el curso que le es asignado, tipus devuelve:
     //0 si es bachiller, 1 si es FP
-    //c_t val credits si es obligatoria i tipus si es optativa
-
+    //c_t val credits si es obligatoria i tipus si es optativa                  
+    
+    //??????????????????????????????????????????????????????????????????????????????????????????????????????
+    //???   Podria ser que no, pero todas las comprobaciones de altaAssignatura puede que sean demas?    ???
+    //???   Porque igualmente solo se llama altaAssignatura al dar de alta un curso, por lo que la mitad ???
+    //???   del metodo de comprobaciones y tal seria quitable de cara a que cuando inicias un curso      ???
+    //???   luego das de alta sus asignaturas, por lo que OBVIAMENTE seran de ese curso                  ???
+    //??????????????????????????????????????????????????????????????????????????????????????????????????????
     void altaAssignatura(int curs, String especialitat, int codiCurs, String nom, String codi, String tipus, String c_t) {
         curs aux = cursos.getPrimer();
         boolean cursTrobat = false;
@@ -105,7 +111,7 @@ public class main {
             while (aux != null && !cursTrobat) {
                 if (aux instanceof batxiller) {
                     batxiller auxB = (batxiller) aux;
-                    if (auxB.getEspecialitat() == batxiller.especialitat.valueOf(especialitat)) {
+                    if (auxB.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && auxB.getCodi() == codiCurs) {
                         cursTrobat = true;
                         if (tipus.equals("obligatoria")) {
                             obligatoria assignatura = new obligatoria();
@@ -128,7 +134,7 @@ public class main {
             while (aux != null && !cursTrobat) {
                 if (aux instanceof FP) {
                     FP auxFp = (FP) aux;
-                    if (auxFp.getEspecialitat() == FP.especialitat.valueOf(especialitat)) {
+                    if (auxFp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && auxFp.getCodi() == codiCurs) {
                         cursTrobat = true;
                         if (tipus.equals("obligatoria")) {
                             obligatoria assignatura = new obligatoria();
