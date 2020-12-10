@@ -97,7 +97,7 @@ public class main {
     //si no se da de alta en el curso que le es asignado, tipus devuelve:
     //0 si es bachiller, 1 si es FP
     //c_t val credits si es obligatoria i tipus si es optativa                  
-    
+
     //??????????????????????????????????????????????????????????????????????????????????????????????????????
     //???   Podria ser que no, pero todas las comprobaciones de altaAssignatura puede que sean demas?    ???
     //???   Porque igualmente solo se llama altaAssignatura al dar de alta un curso, por lo que la mitad ???
@@ -130,7 +130,7 @@ public class main {
                 }
                 aux = aux.getSeg();
             }
-        } else {
+        } else if (curs == 1) {
             while (aux != null && !cursTrobat) {
                 if (aux instanceof FP) {
                     FP auxFp = (FP) aux;
@@ -153,14 +153,50 @@ public class main {
                 }
                 aux = aux.getSeg();
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "No es pot crear la assignatura!");
         }
     }
 
-    void baixaAssignatura(int i
-    ) {
+    void baixaAssignatura(int codi) {
+        boolean cursTrobat = false;
+        assignatura auxPrint = null;
+        curs aux = cursos.getPrimer();
+        while (aux != null && !cursTrobat) {
+            if (aux instanceof batxiller) {
+                batxiller b = (batxiller) aux;
+                llistaAssignatures iterador = b.getLlistaAssign();
+                if (iterador.trobar(String.valueOf(codi)) != null) {
+                    cursTrobat = true;
+                    auxPrint = iterador.trobar(String.valueOf(codi));
+                    iterador.borrar(String.valueOf(codi));
+                }
+            } else {
+                FP fp = (FP) aux;
+                llistaAssignatures iterador = fp.getLlistaAssign();
+                if (iterador.trobar(String.valueOf(codi)) != null) {
+                    cursTrobat = true;
+                    auxPrint = iterador.trobar(String.valueOf(codi));
+                    iterador.borrar(String.valueOf(codi));
+                }
+            }
+            aux = aux.getSeg();
+        }
+        if (cursTrobat) {
+            if (auxPrint instanceof obligatoria) {
+                obligatoria o = (obligatoria) auxPrint;
+                JOptionPane.showMessageDialog(null, "Donada de baixa correctament!, assignatura: \n\n" + o.imprimir());
+            } else {
+                optativa o = (optativa) auxPrint;
+                JOptionPane.showMessageDialog(null, "Donada de baixa correctament!, assignatura: \n\n" + o.imprimir());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No s'ha pogut donar de baixa, no existeix!");
+        }
 
     }
 //falta poner un sistema de codi, no 2020 
+
     void altaCurs(String tipus, String especialitat, int codi) {
         if (tipus.equals("batxiller")) {
             batxiller b = new batxiller();

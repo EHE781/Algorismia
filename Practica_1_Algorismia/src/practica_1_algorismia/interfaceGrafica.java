@@ -148,7 +148,7 @@ public class interfaceGrafica extends JFrame {
     public int obrirEmergentBorrarAssignatura() {
         JTextField codi = new JTextField();
         Object dades[] = {
-            "Codi assignatura: ", codi
+            "Codi assignatura a borrar: ", codi
         };
         JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
         //Si codi es null, retornam -1
@@ -348,7 +348,7 @@ public class interfaceGrafica extends JFrame {
             int res = JOptionPane.showConfirmDialog(null, demanar, "Assignatura", JOptionPane.OK_CANCEL_OPTION);
             if (res == JOptionPane.OK_OPTION) {
                 String dades[] = {
-                    nom.getText().toLowerCase(),
+                    nom.getText(),
                     codi.getText().toLowerCase(),
                     oblOpt.getSelectedValue().toString().toLowerCase(),
                     obligatoria ? credits.getText().toLowerCase() : perfilOptativa.getSelectedValue().toString().toLowerCase()
