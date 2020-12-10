@@ -188,10 +188,12 @@ public class interfaceGrafica extends JFrame {
             }
             especialitat = new JScrollPane(listaFp);
         }
+        JTextField codiCurs = new JTextField();
         Object enumerat[] = {
-            "Especialitat: ", especialitat
+            "Especialitat: ", especialitat,
+            "Codi: ",   codiCurs
         };
-        JOptionPane.showConfirmDialog(null, enumerat, "Especialitat", JOptionPane.OK_CANCEL_OPTION);
+        JOptionPane.showConfirmDialog(null, enumerat, "Especifica les dades", JOptionPane.OK_CANCEL_OPTION);
         int tipus = -1;
         if (listaTipusCurs.getSelectedValue().toString().equals(nomTipusCurs[0])) {
             tipus = 0;
@@ -199,14 +201,14 @@ public class interfaceGrafica extends JFrame {
             tipus = 1;
         }
         nomEspecialitat = batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString();
-        principal.altaCurs(listaTipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase());
+        principal.altaCurs(listaTipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase(),Integer.parseInt(codiCurs.getText()));
         if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
             try {
                 for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
 
                     String nova[] = obrirEmergentAssignatura();
                     //en tipus es si es de batxiller o FP
-                    principal.altaAssignatura(tipus, nomEspecialitat, nova[0], nova[1], nova[2], nova[3]);
+                    principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
 
                 }
                 System.out.println("Fin");

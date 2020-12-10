@@ -98,7 +98,7 @@ public class main {
     //0 si es bachiller, 1 si es FP
     //c_t val credits si es obligatoria i tipus si es optativa
 
-    void altaAssignatura(int curs, String especialitat, String nom, String codi, String tipus, String c_t) {
+    void altaAssignatura(int curs, String especialitat, int codiCurs, String nom, String codi, String tipus, String c_t) {
         curs aux = cursos.getPrimer();
         boolean cursTrobat = false;
         if (curs == 0) {
@@ -155,18 +155,18 @@ public class main {
 
     }
 //falta poner un sistema de codi, no 2020 
-    void altaCurs(String tipus, String especialitat) {
+    void altaCurs(String tipus, String especialitat, int codi) {
         if (tipus.equals("batxiller")) {
             batxiller b = new batxiller();
             b.setEspecialitat(batxiller.especialitat.valueOf(especialitat));
             b.posarNom("Curs de " + especialitat + " de batxiller");
-            b.posarCodi(Integer.parseInt("2020"));
+            b.posarCodi(codi);
             cursos.insertar((curs) b);
         } else {
             FP fp = new FP();
             fp.setEspecialitat(FP.especialitat.valueOf(especialitat));
             fp.posarNom("Curs de " + especialitat + " de FP");
-            fp.posarCodi(Integer.parseInt("2020"));
+            fp.posarCodi(codi);
             cursos.insertar((curs) fp);
         }
     }
