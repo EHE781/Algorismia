@@ -19,6 +19,12 @@ public class main {
     private static llistaCursos cursos = new llistaCursos();
     private static llistaEstudiants estudiants = new llistaEstudiants();
 
+    public llistaCursos getCursos(){
+        return this.cursos;
+    }
+    public llistaEstudiants getEstudiants(){
+        return this.estudiants;
+    }
     public static void main(String[] args) {
         main start = new main();
 
@@ -56,6 +62,11 @@ public class main {
                         } else {
                             //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
                             estudiant est = estudiants.trobar(dni);
+                            //Si no es troba a la llista de estudiants (primera matriculació)
+                            if (est == null) {
+                                est = new estudiant(nom, dni);
+                                estudiants.insertar(est);
+                            }
                             auxB.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
                             est.getLlistaAssignatures().insertar(auxB.getLlistaAssign().trobar(codiAssignatura));
                             matriculat = true;
@@ -195,7 +206,6 @@ public class main {
         }
 
     }
-//falta poner un sistema de codi, no 2020 
 
     void altaCurs(String tipus, String especialitat, int codi) {
         if (tipus.equals("batxiller")) {
@@ -213,4 +223,83 @@ public class main {
         }
     }
 
+    //Tipus = 0 si batxiller, 1 si FP
+    void baixaCurs(int tipus, String especialitat, int codiCurs) {
+        curs aux = cursos.getPrimer();
+        //Cas batxiller
+        while (aux != null) {
+            if (tipus == 0) {
+                if (aux instanceof batxiller) {
+                    batxiller b = (batxiller) aux;
+                    if (b.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && b.getCodi() == codiCurs) {
+                        //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
+                        for (assignatura i : b.getLlistaAssign()) {
+                            if (i instanceof obligatoria) {
+                                obligatoria o = (obligatoria) i;
+                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
+                                while (it != null) {
+                                    estudiant e = it.getEstudiant();
+                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
+                                    if (e.getLlistaAssignatures().buida()) {
+                                        o.getLlistaEstudiants().borrar(e.getNom());
+                                    }
+                                    it = it.seguent();
+                                }
+                            } else {
+                                optativa o = (optativa) i;
+                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
+                                while (it != null) {
+                                    estudiant e = it.getEstudiant();
+                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
+                                    if (e.getLlistaAssignatures().buida()) {
+                                        o.getLlistaEstudiants().borrar(e.getNom());
+                                    }
+                                    it = it.seguent();
+                                }
+                            }
+                        }
+                        b.getLlistaAssign().clear();
+                        //Despues de haber borrado las asignaturas del curso borramos curso
+                        cursos.borrar(String.valueOf(b.getCodi()));
+                        break;
+                    }
+                } else {
+                    FP fp = (FP) aux;
+                    if (fp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && fp.getCodi() == codiCurs) {
+                        //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
+                        for (assignatura i : fp.getLlistaAssign()) {
+                            if (i instanceof obligatoria) {
+                                obligatoria o = (obligatoria) i;
+                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
+                                while (it != null) {
+                                    estudiant e = it.getEstudiant();
+                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
+                                    if (e.getLlistaAssignatures().buida()) {
+                                        o.getLlistaEstudiants().borrar(e.getNom());
+                                    }
+                                    it = it.seguent();
+                                }
+                            } else {
+                                optativa o = (optativa) i;
+                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
+                                while (it != null) {
+                                    estudiant e = it.getEstudiant();
+                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
+                                    if (e.getLlistaAssignatures().buida()) {
+                                        o.getLlistaEstudiants().borrar(e.getNom());
+                                    }
+                                    it = it.seguent();
+                                }
+                            }
+                        }
+                        fp.getLlistaAssign().clear();
+                        //Despues de haber borrado las asignaturas del curso borramos curso
+                        cursos.borrar(String.valueOf(fp.getCodi()));
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
 }

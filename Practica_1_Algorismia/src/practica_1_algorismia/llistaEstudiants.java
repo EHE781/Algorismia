@@ -18,7 +18,9 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
     public llistaEstudiants() {
         primer = null;
     }
-
+    public nodoEstudiant getPrimer(){
+        return this.primer;
+    }
     @Override
     public void borrar(String nom) {
         nodoEstudiant aux = primer;

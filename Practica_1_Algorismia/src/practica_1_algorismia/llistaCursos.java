@@ -46,23 +46,24 @@ public class llistaCursos implements interficieLlista<curs>{
     }
 
     @Override
-    public void borrar(String nom) {
+    public void borrar(String codi) {
         curs aux,paux;
+        int cod = Integer.parseInt(codi);
         paux = null;
         aux = primer;
         if(primer == null){
             System.out.println("Llista buida");
         }
         else{
-            if(primer.nom.equals(nom)){
+            if(primer.getCodi() == cod){
                 primer = primer.seg;
             }
             else{
-                while(!aux.nom.equals(nom) && aux.seg != null){
+                while(aux.getCodi() != cod && aux.seg != null){
                     paux = aux;
                     aux = aux.seg;
                 }
-                if(aux.nom.equals(nom)){
+                if(aux.getCodi() == cod){
                     paux.seg = aux.seg;
                 }
                 else{

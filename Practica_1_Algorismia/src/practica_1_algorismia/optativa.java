@@ -19,6 +19,9 @@ public class optativa extends assignatura{
         llista = new llistaEstudiants();
     }
     
+    public llistaEstudiants getLlistaEstudiants(){
+        return this.llista;
+    }
     @Override
     public String imprimir() {
         return "ASSIGNATURA OPTATIVA :\n\nNOM : "+nom+"\nCODI : "+codi+"\nPERFIL : "+per.name()+"\n";

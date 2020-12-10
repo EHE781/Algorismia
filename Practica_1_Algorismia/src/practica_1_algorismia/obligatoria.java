@@ -18,6 +18,9 @@ public class obligatoria extends assignatura{
         llista = new llistaEstudiants();
     }
     
+    public llistaEstudiants getLlistaEstudiants(){
+        return this.llista;
+    }
     public void setCredits(int credits){
         this.credits = credits;
     }
