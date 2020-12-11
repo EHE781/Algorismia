@@ -19,12 +19,14 @@ public class main {
     private static llistaCursos cursos = new llistaCursos();
     private static llistaEstudiants estudiants = new llistaEstudiants();
 
-    public llistaCursos getCursos(){
+    public llistaCursos getCursos() {
         return this.cursos;
     }
-    public llistaEstudiants getEstudiants(){
+
+    public llistaEstudiants getEstudiants() {
         return this.estudiants;
     }
+
     public static void main(String[] args) {
         main start = new main();
 
@@ -54,44 +56,34 @@ public class main {
         while (aux != null && !matriculat) {
             if (aux instanceof batxiller) {
                 batxiller auxB = (batxiller) aux;
-                for (int i = 0; i < auxB.getLlistaAssign().size(); i++) {
-                    if (auxB.getLlistaAssign().trobar(codiAssignatura) != null) {
-                        //mirar si existe estudiante
-                        if (auxB.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) != null) {
-                            break;
-                        } else {
-                            //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
-                            estudiant est = estudiants.trobar(dni);
-                            //Si no es troba a la llista de estudiants (primera matriculació)
-                            if (est == null) {
-                                est = new estudiant(nom, dni);
-                                estudiants.insertar(est);
-                            }
-                            auxB.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
-                            est.getLlistaAssignatures().insertar(auxB.getLlistaAssign().trobar(codiAssignatura));
-                            matriculat = true;
-                            break;
+                if (auxB.getLlistaAssign().trobar(codiAssignatura) != null) {
+                    //mirar si existe estudiante
+                    if (auxB.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) == null) {
+                        //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
+                        estudiant est = estudiants.trobar(dni);
+                        //Si no es troba a la llista de estudiants (primera matriculació)
+                        if (est == null) {
+                            est = new estudiant(nom, dni);
+                            estudiants.insertar(est);
                         }
-                    } else {
-                        break;
+                        auxB.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
+                        est.getLlistaAssignatures().insertar(auxB.getLlistaAssign().trobar(codiAssignatura));
+                        matriculat = true;
                     }
                 }
             } else {
                 FP auxFP = (FP) aux;
-                for (int i = 0; i < auxFP.getLlistaAssign().size(); i++) {
-                    if (auxFP.getLlistaAssign().trobar(codiAssignatura) != null) {
-                        if (auxFP.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) != null) {
-                            break;
-                        } else {
-                            //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
-                            estudiant est = estudiants.trobar(dni);
-                            auxFP.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
-                            est.getLlistaAssignatures().insertar(auxFP.getLlistaAssign().trobar(codiAssignatura));
-                            matriculat = true;
-                            break;
+                if (auxFP.getLlistaAssign().trobar(codiAssignatura) != null) {
+                    if (auxFP.getLlistaAssign().trobar(codiAssignatura).llista.trobar(dni) == null) {
+                        //podemos iniciar el procedimiento de matriculacion del estudiante porque existe la assign
+                        estudiant est = estudiants.trobar(dni);
+                        if (est == null) {
+                            est = new estudiant(nom, dni);
+                            estudiants.insertar(est);
                         }
-                    } else {
-                        break;
+                        auxFP.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
+                        est.getLlistaAssignatures().insertar(auxFP.getLlistaAssign().trobar(codiAssignatura));
+                        matriculat = true;
                     }
                 }
             }
@@ -180,6 +172,14 @@ public class main {
                 if (iterador.trobar(String.valueOf(codi)) != null) {
                     cursTrobat = true;
                     auxPrint = iterador.trobar(String.valueOf(codi));
+                    nodoEstudiant e = auxPrint.llista.getPrimer();
+                    while (e != null) {
+                        e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
+                        if(e.getEstudiant().getLlistaAssignatures().buida()){
+                            estudiants.borrar(e.getEstudiant().getDni());
+                        }
+                        e = e.seguent();
+                    }
                     iterador.borrar(String.valueOf(codi));
                 }
             } else {
@@ -188,6 +188,14 @@ public class main {
                 if (iterador.trobar(String.valueOf(codi)) != null) {
                     cursTrobat = true;
                     auxPrint = iterador.trobar(String.valueOf(codi));
+                    nodoEstudiant e = auxPrint.llista.getPrimer();
+                    while (e != null) {
+                        e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
+                        if(e.getEstudiant().getLlistaAssignatures().buida()){
+                            estudiants.borrar(e.getEstudiant().getDni());
+                        }
+                        e = e.seguent();
+                    }
                     iterador.borrar(String.valueOf(codi));
                 }
             }
@@ -234,29 +242,7 @@ public class main {
                     if (b.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && b.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         for (assignatura i : b.getLlistaAssign()) {
-                            if (i instanceof obligatoria) {
-                                obligatoria o = (obligatoria) i;
-                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
-                                while (it != null) {
-                                    estudiant e = it.getEstudiant();
-                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
-                                    if (e.getLlistaAssignatures().buida()) {
-                                        o.getLlistaEstudiants().borrar(e.getNom());
-                                    }
-                                    it = it.seguent();
-                                }
-                            } else {
-                                optativa o = (optativa) i;
-                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
-                                while (it != null) {
-                                    estudiant e = it.getEstudiant();
-                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
-                                    if (e.getLlistaAssignatures().buida()) {
-                                        o.getLlistaEstudiants().borrar(e.getNom());
-                                    }
-                                    it = it.seguent();
-                                }
-                            }
+                            baixaAssignatura(i.getCodi());
                         }
                         b.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso
@@ -268,29 +254,7 @@ public class main {
                     if (fp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && fp.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         for (assignatura i : fp.getLlistaAssign()) {
-                            if (i instanceof obligatoria) {
-                                obligatoria o = (obligatoria) i;
-                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
-                                while (it != null) {
-                                    estudiant e = it.getEstudiant();
-                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
-                                    if (e.getLlistaAssignatures().buida()) {
-                                        o.getLlistaEstudiants().borrar(e.getNom());
-                                    }
-                                    it = it.seguent();
-                                }
-                            } else {
-                                optativa o = (optativa) i;
-                                nodoEstudiant it = o.getLlistaEstudiants().getPrimer();
-                                while (it != null) {
-                                    estudiant e = it.getEstudiant();
-                                    e.getLlistaAssignatures().borrar(String.valueOf(o.getCodi()));
-                                    if (e.getLlistaAssignatures().buida()) {
-                                        o.getLlistaEstudiants().borrar(e.getNom());
-                                    }
-                                    it = it.seguent();
-                                }
-                            }
+                            baixaAssignatura(i.getCodi());
                         }
                         fp.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso

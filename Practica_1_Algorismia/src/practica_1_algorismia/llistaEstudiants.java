@@ -22,23 +22,23 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
         return this.primer;
     }
     @Override
-    public void borrar(String nom) {
+    public void borrar(String dni) {
         nodoEstudiant aux = primer;
         nodoEstudiant paux = null;
         //Cas llista buida
         if (primer == null) {
             JOptionPane.showMessageDialog(null, "No existeix");
         } else {
-            if (primer.getEstudiant().getDni().equals(nom)) {
+            if (primer.getEstudiant().getDni().equals(dni)) {
                 primer = primer.seguent();
             } else {
                 //Cercar en tota la llista fins trobar nom o arribar al final
-                while (aux.seguent() != null && !aux.getEstudiant().getDni().equals(nom)) {
+                while (aux.seguent() != null && !aux.getEstudiant().getDni().equals(dni)) {
                     paux = aux;
                     aux = aux.seguent();
                 }
                 //Si es l'últim element no ha pogut trobar nom, pertant...
-                if (!aux.getEstudiant().getDni().equals(nom)) {
+                if (!aux.getEstudiant().getDni().equals(dni)) {
                     JOptionPane.showMessageDialog(null, "No existeix");
                     //Si no entra al if es perque ha trobat el nom
                 } else {
