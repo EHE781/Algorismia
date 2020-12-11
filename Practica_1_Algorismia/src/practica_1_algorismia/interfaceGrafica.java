@@ -139,8 +139,8 @@ public class interfaceGrafica extends JFrame {
                     auxE = auxE.seguent();
                 }
                 texte.setText(impresion);
-                setVisible(false);
-                setVisible(true);
+                //setVisible(false);
+                //setVisible(true);
             }
 
         };

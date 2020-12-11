@@ -175,7 +175,7 @@ public class main {
                     nodoEstudiant e = auxPrint.llista.getPrimer();
                     while (e != null) {
                         e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
-                        if(e.getEstudiant().getLlistaAssignatures().buida()){
+                        if (e.getEstudiant().getLlistaAssignatures().buida()) {
                             estudiants.borrar(e.getEstudiant().getDni());
                         }
                         e = e.seguent();
@@ -191,7 +191,7 @@ public class main {
                     nodoEstudiant e = auxPrint.llista.getPrimer();
                     while (e != null) {
                         e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
-                        if(e.getEstudiant().getLlistaAssignatures().buida()){
+                        if (e.getEstudiant().getLlistaAssignatures().buida()) {
                             estudiants.borrar(e.getEstudiant().getDni());
                         }
                         e = e.seguent();
@@ -241,20 +241,30 @@ public class main {
                     batxiller b = (batxiller) aux;
                     if (b.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && b.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
+                        int baixes[] = new int[b.getLlistaAssign().size()];
                         for (assignatura i : b.getLlistaAssign()) {
-                            baixaAssignatura(i.getCodi());
+                            baixes[b.getLlistaAssign().indexOf(i)]=i.getCodi();
+                        }
+                        for(int i = 0; i < baixes.length; i++){
+                            baixaAssignatura(baixes[i]);
                         }
                         b.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso
                         cursos.borrar(String.valueOf(b.getCodi()));
                         break;
                     }
-                } else {
+                }
+            } else {
+                if (aux instanceof FP) {
                     FP fp = (FP) aux;
                     if (fp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && fp.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
+                        int baixes[] = new int[fp.getLlistaAssign().size()];
                         for (assignatura i : fp.getLlistaAssign()) {
-                            baixaAssignatura(i.getCodi());
+                            baixes[fp.getLlistaAssign().indexOf(i)]=i.getCodi();
+                        }
+                        for(int i = 0; i < baixes.length; i++){
+                            baixaAssignatura(baixes[i]);
                         }
                         fp.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso
@@ -264,6 +274,5 @@ public class main {
                 }
             }
         }
-
     }
 }
