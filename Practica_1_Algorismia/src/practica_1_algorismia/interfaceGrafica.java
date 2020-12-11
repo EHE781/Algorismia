@@ -41,6 +41,7 @@ public class interfaceGrafica extends JFrame {
     private String imatgeLogo = "logo.png";
     private main principal;
     private JTextArea texte = null;
+
     public interfaceGrafica(main principal) {
         this.principal = principal;
         this.setLayout(new BorderLayout());
@@ -87,6 +88,17 @@ public class interfaceGrafica extends JFrame {
         elements.setLayout(new GridLayout(BOTONS_ELEMENTS, 1));
         JPanel operacions = new JPanel();
         JButton imprimidor = new JButton("Imprimir");
+        JButton impresiones[] = new JButton[3];
+        ActionListener imprimirCurs = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                //preguntar que curso imprimir
+                //imprimir ese curso
+                //imprimir las asignaturas que tiene
+                //imprimir estudiantes matricualdos a cada asginatura
+            }
+            
+        };
         ActionListener escuchador = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -152,14 +164,22 @@ public class interfaceGrafica extends JFrame {
         ActionListener altaCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                obrirEmergentAltaCurs();
+                try {
+                    obrirEmergentAltaCurs();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "No s'ha pogut donar d'alta el curs!");
+                }
             }
         };
         ActionListener baixaCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                try{
                 String infoCurs[] = obrirEmergentBaixaCurs();
                 principal.baixaCurs(Integer.parseInt(infoCurs[0]), infoCurs[1], Integer.parseInt(infoCurs[2]));
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, "No s'ha pogut donar de baixa correctament!");
+                }
             }
         };
         ActionListener baixaAssignatura = new ActionListener() {
@@ -169,7 +189,7 @@ public class interfaceGrafica extends JFrame {
                 if (codi != -1) {
                     principal.baixaAssignatura(codi);
                 } else {
-                    JOptionPane.showMessageDialog(null, "No s'ha detectat cap codi!");
+                    JOptionPane.showMessageDialog(null, "No s'ha detectat cap codi vàlid!");
                 }
             }
         };
@@ -215,9 +235,16 @@ public class interfaceGrafica extends JFrame {
         };
         JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
         //Si codi es null, retornam -1
-        return codi == null ? -1 : Integer.parseInt(codi.getText());
+        return "".equals(codi.getText()) || !esNumero(codi.getText()) ? -1 : Integer.parseInt(codi.getText());
     }
-
+    private boolean esNumero(String nr){
+        try{
+            int i = Integer.parseInt(nr);
+            return true;
+        }catch(NumberFormatException e){ 
+            return false;
+        }
+    }
     public void obrirEmergentAltaCurs() {
         JTextField nr = new JTextField();
         String[] nomTipusCurs = {"Batxiller", "FP"};
@@ -229,51 +256,53 @@ public class interfaceGrafica extends JFrame {
             "Numero assignatures que tendrà el curs: ", nr
         };
         int res = JOptionPane.showConfirmDialog(null, info, "Informació", JOptionPane.OK_CANCEL_OPTION);
-        String batx[] = new String[batxiller.especialitat.values().length];
-        String fp[] = new String[FP.especialitat.values().length];
-        int cont = 0;
-        JList listaBatx = new JList(batx);
-        JList listaFp = new JList(fp);
-        if (tipusCurs.getSelectedValue().equals(nomTipusCurs[0])) {
-            for (batxiller.especialitat i : batxiller.especialitat.values()) {
-                batx[cont] = i.toString();
-                cont++;
-            }
-            batxNfp = true;
-        }
-        if (tipusCurs.getSelectedValue().equals(nomTipusCurs[1])) {
-            for (FP.especialitat i : FP.especialitat.values()) {
-                fp[cont] = i.toString();
-                cont++;
-            }
-        }
-        JTextField codiCurs = new JTextField();
-        Object enumerat[] = {
-            "Especialitat del curs?: ", batxNfp ? listaBatx : listaFp,
-            "Codi del curs (numeric): ", codiCurs
-        };
-        res = JOptionPane.showConfirmDialog(null, enumerat, "Especifica les dades", JOptionPane.OK_CANCEL_OPTION);
         if (res == JOptionPane.OK_OPTION) {
-            try {
-                int tipus = -1;
-                if (tipusCurs.getSelectedValue().toString().equals(nomTipusCurs[0])) {
-                    tipus = 0;
-                } else if (tipusCurs.getSelectedValue().toString().equals(nomTipusCurs[1])) {
-                    tipus = 1;
+            String batx[] = new String[batxiller.especialitat.values().length];
+            String fp[] = new String[FP.especialitat.values().length];
+            int cont = 0;
+            JList listaBatx = new JList(batx);
+            JList listaFp = new JList(fp);
+            if (tipusCurs.getSelectedValue().equals(nomTipusCurs[0])) {
+                for (batxiller.especialitat i : batxiller.especialitat.values()) {
+                    batx[cont] = i.toString();
+                    cont++;
                 }
-                nomEspecialitat = batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString();
-                principal.altaCurs(tipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase(), Integer.parseInt(codiCurs.getText()));
-                if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
-
-                    for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
-
-                        String nova[] = obrirEmergentAssignatura();
-                        //en tipus es si es de batxiller o FP
-                        principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
+                batxNfp = true;
+            }
+            if (tipusCurs.getSelectedValue().equals(nomTipusCurs[1])) {
+                for (FP.especialitat i : FP.especialitat.values()) {
+                    fp[cont] = i.toString();
+                    cont++;
+                }
+            }
+            JTextField codiCurs = new JTextField();
+            Object enumerat[] = {
+                "Especialitat del curs?: ", batxNfp ? listaBatx : listaFp,
+                "Codi del curs (numeric): ", codiCurs
+            };
+            res = JOptionPane.showConfirmDialog(null, enumerat, "Especifica les dades", JOptionPane.OK_CANCEL_OPTION);
+            if (res == JOptionPane.OK_OPTION) {
+                try {
+                    int tipus = -1;
+                    if (tipusCurs.getSelectedValue().toString().equals(nomTipusCurs[0])) {
+                        tipus = 0;
+                    } else if (tipusCurs.getSelectedValue().toString().equals(nomTipusCurs[1])) {
+                        tipus = 1;
                     }
+                    nomEspecialitat = batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString();
+                    principal.altaCurs(tipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase(), Integer.parseInt(codiCurs.getText()));
+                    if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
+
+                        for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
+
+                            String nova[] = obrirEmergentAssignatura();
+                            //en tipus es si es de batxiller o FP
+                            principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
+                        }
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "No es possible!");
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "No es possible!");
             }
         }
     }
