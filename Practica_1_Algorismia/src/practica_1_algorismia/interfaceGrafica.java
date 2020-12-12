@@ -290,8 +290,8 @@ public class interfaceGrafica extends JFrame {
                         tipus = 1;
                     }
                     nomEspecialitat = batxNfp ? listaBatx.getSelectedValue().toString() : listaFp.getSelectedValue().toString();
-                    principal.altaCurs(tipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase(), Integer.parseInt(codiCurs.getText()));
-                    if (res == JOptionPane.OK_OPTION && nr.getText() != null) {
+                    boolean trobat = principal.altaCurs(tipusCurs.getSelectedValue().toString().toLowerCase(), nomEspecialitat.toLowerCase(), Integer.parseInt(codiCurs.getText()));
+                    if (trobat && res == JOptionPane.OK_OPTION && nr.getText() != null) {
 
                         for (int i = 0; i < Integer.parseInt(nr.getText()); i++) {
 

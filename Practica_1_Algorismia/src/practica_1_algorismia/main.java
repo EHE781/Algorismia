@@ -66,6 +66,11 @@ public class main {
                         if (est == null) {
                             est = new estudiant(nom, dni);
                             estudiants.insertar(est);
+                        } else {
+                            //Si s'ha trobat l'estudiant i nom no coincideix
+                            if (!est.getNom().equals(nom)) {
+                                break;
+                            }
                         }
                         auxB.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
                         est.getLlistaAssignatures().insertar(auxB.getLlistaAssign().trobar(codiAssignatura));
@@ -81,6 +86,11 @@ public class main {
                         if (est == null) {
                             est = new estudiant(nom, dni);
                             estudiants.insertar(est);
+                        } else {
+                            //Si s'ha trobat l'estudiant i nom no coincideix
+                            if (!est.getNom().equals(nom)) {
+                                break;
+                            }
                         }
                         auxFP.getLlistaAssign().trobar(codiAssignatura).llista.insertar(est);
                         est.getLlistaAssignatures().insertar(auxFP.getLlistaAssign().trobar(codiAssignatura));
@@ -111,18 +121,20 @@ public class main {
                     batxiller auxB = (batxiller) aux;
                     if (auxB.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && auxB.getCodi() == codiCurs) {
                         cursTrobat = true;
-                        if (tipus.equals("obligatoria")) {
-                            obligatoria assignatura = new obligatoria();
-                            assignatura.posarNom(nom);
-                            assignatura.posarCodi(Integer.parseInt(codi));
-                            assignatura.setCredits(Integer.parseInt(c_t));
-                            auxB.getLlistaAssign().insertar(assignatura);
-                        } else {
-                            optativa assignatura = new optativa();
-                            assignatura.posarNom(nom);
-                            assignatura.posarCodi(Integer.parseInt(codi));
-                            assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
-                            auxB.getLlistaAssign().insertar(assignatura);
+                        if (!trobarAssignatura(codi)) {
+                            if (tipus.equals("obligatoria")) {
+                                obligatoria assignatura = new obligatoria();
+                                assignatura.posarNom(nom);
+                                assignatura.posarCodi(Integer.parseInt(codi));
+                                assignatura.setCredits(Integer.parseInt(c_t));
+                                auxB.getLlistaAssign().insertar(assignatura);
+                            } else {
+                                optativa assignatura = new optativa();
+                                assignatura.posarNom(nom);
+                                assignatura.posarCodi(Integer.parseInt(codi));
+                                assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
+                                auxB.getLlistaAssign().insertar(assignatura);
+                            }
                         }
                     }
                 }
@@ -134,18 +146,20 @@ public class main {
                     FP auxFp = (FP) aux;
                     if (auxFp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && auxFp.getCodi() == codiCurs) {
                         cursTrobat = true;
-                        if (tipus.equals("obligatoria")) {
-                            obligatoria assignatura = new obligatoria();
-                            assignatura.posarNom(nom);
-                            assignatura.posarCodi(Integer.parseInt(codi));
-                            assignatura.setCredits(Integer.parseInt(c_t));
-                            auxFp.getLlistaAssign().insertar(assignatura);
-                        } else {
-                            optativa assignatura = new optativa();
-                            assignatura.posarNom(nom);
-                            assignatura.posarCodi(Integer.parseInt(codi));
-                            assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
-                            auxFp.getLlistaAssign().insertar(assignatura);
+                        if (!trobarAssignatura(codi)) {
+                            if (tipus.equals("obligatoria")) {
+                                obligatoria assignatura = new obligatoria();
+                                assignatura.posarNom(nom);
+                                assignatura.posarCodi(Integer.parseInt(codi));
+                                assignatura.setCredits(Integer.parseInt(c_t));
+                                auxFp.getLlistaAssign().insertar(assignatura);
+                            } else {
+                                optativa assignatura = new optativa();
+                                assignatura.posarNom(nom);
+                                assignatura.posarCodi(Integer.parseInt(codi));
+                                assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
+                                auxFp.getLlistaAssign().insertar(assignatura);
+                            }
                         }
                     }
                 }
@@ -156,6 +170,7 @@ public class main {
         }
     }
 //posar codiCurs
+
     void baixaAssignatura(int codi) {
         boolean cursTrobat = false;
         assignatura auxPrint = null;
@@ -210,19 +225,34 @@ public class main {
 
     }
 
-    void altaCurs(String tipus, String especialitat, int codi) {
+    public boolean altaCurs(String tipus, String especialitat, int codi) {
+        boolean trobat = true;
         if (tipus.equals("batxiller")) {
-            batxiller b = new batxiller();
-            b.setEspecialitat(batxiller.especialitat.valueOf(especialitat));
-            b.posarNom("Curs de " + especialitat + " de batxiller");
-            b.posarCodi(codi);
-            cursos.insertar(b);
+            if (cursos.trobar(String.valueOf(codi)) == null) {
+                batxiller b = new batxiller();
+                b.setEspecialitat(batxiller.especialitat.valueOf(especialitat));
+                b.posarNom("Curs de " + especialitat + " de batxiller");
+                b.posarCodi(codi);
+                cursos.insertar(b);
+            } else {
+                trobat = false;
+            }
         } else {
-            FP fp = new FP();
-            fp.setEspecialitat(FP.especialitat.valueOf(especialitat));
-            fp.posarNom("Curs de " + especialitat + " de FP");
-            fp.posarCodi(codi);
-            cursos.insertar(fp);
+            if (cursos.trobar(String.valueOf(codi)) == null) {
+                FP fp = new FP();
+                fp.setEspecialitat(FP.especialitat.valueOf(especialitat));
+                fp.posarNom("Curs de " + especialitat + " de FP");
+                fp.posarCodi(codi);
+                cursos.insertar(fp);
+            } else {
+                trobat = false;
+            }
+        }
+        if (!trobat) {
+            JOptionPane.showMessageDialog(null, "El curs ja existeix!");
+            return false;
+        }else{
+            return true;
         }
     }
 
@@ -238,9 +268,9 @@ public class main {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         int baixes[] = new int[b.getLlistaAssign().size()];
                         for (assignatura i : b.getLlistaAssign()) {
-                            baixes[b.getLlistaAssign().indexOf(i)]=i.getCodi();
+                            baixes[b.getLlistaAssign().indexOf(i)] = i.getCodi();
                         }
-                        for(int i = 0; i < baixes.length; i++){
+                        for (int i = 0; i < baixes.length; i++) {
                             baixaAssignatura(baixes[i]);
                         }
                         b.getLlistaAssign().clear();
@@ -256,9 +286,9 @@ public class main {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         int baixes[] = new int[fp.getLlistaAssign().size()];
                         for (assignatura i : fp.getLlistaAssign()) {
-                            baixes[fp.getLlistaAssign().indexOf(i)]=i.getCodi();
+                            baixes[fp.getLlistaAssign().indexOf(i)] = i.getCodi();
                         }
-                        for(int i = 0; i < baixes.length; i++){
+                        for (int i = 0; i < baixes.length; i++) {
                             baixaAssignatura(baixes[i]);
                         }
                         fp.getLlistaAssign().clear();
@@ -270,8 +300,24 @@ public class main {
             }
             aux = aux.getSeg();
         }
-        if(aux == null){
+        if (aux == null) {
             JOptionPane.showMessageDialog(null, "No s'ha trobat el curs, no existeix!");
         }
+    }
+
+    private boolean trobarAssignatura(String codiAssignatura) {
+        curs aux = cursos.getPrimer();
+        boolean trobat = false;
+        while (aux != null) {
+            for (assignatura i : aux.getLlistaAssign()) {
+                if (i.getCodi() == Integer.parseInt(codiAssignatura)) {
+                    trobat = true;
+                    break;
+                }
+            }
+            break;
+        }
+        aux = aux.getSeg();
+        return trobat;
     }
 }

@@ -19,7 +19,7 @@ public class llistaCursos implements interficieLlista<curs>{
     }
     @Override
     public void insertar(curs elem) {
-        if(trobar(elem.nom) == null){
+        if(trobar(String.valueOf(elem.getCodi())) == null){
             curs aux;
             aux = primer;
             primer = elem;
@@ -30,13 +30,13 @@ public class llistaCursos implements interficieLlista<curs>{
     }
 
     @Override
-    public curs trobar(String nom) {
+    public curs trobar(String codi) {
         curs aux = primer;
         if (primer != null) {
-            while (!aux.nom.equals(nom) && aux.seg != null) {
+            while (aux.codi != Integer.parseInt(codi) && aux.seg != null) {
                 aux = aux.seg;
             }
-            if (aux.nom.equals(nom)) {
+            if (aux.codi == Integer.parseInt(codi)) {
                 return aux;
             } else {
                 return null;
