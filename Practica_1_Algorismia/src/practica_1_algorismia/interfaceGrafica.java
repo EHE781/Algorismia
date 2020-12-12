@@ -176,7 +176,7 @@ public class interfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try{
                 String infoCurs[] = obrirEmergentBaixaCurs();
-                principal.baixaCurs(Integer.parseInt(infoCurs[0]), infoCurs[1], Integer.parseInt(infoCurs[2]));
+                principal.baixaCurs(Integer.parseInt(infoCurs[0]), Integer.parseInt(infoCurs[1]));
                 }catch(Exception e){
                     JOptionPane.showMessageDialog(null, "No s'ha pogut donar de baixa correctament!");
                 }
@@ -333,13 +333,11 @@ public class interfaceGrafica extends JFrame {
                 }
                 JTextField codi = new JTextField();
                 Object demanar[] = {
-                    "Especialitat del curs?: ", batxNfp ? listaBatx : listaFp,
-                    "Quin es el codi (numeric)?: ", codi,};
+                    "Quin es el codi (numeric)?: ", codi};
                 if (JOptionPane.showConfirmDialog(null, demanar, "Especialitat?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                     if (lista.getSelectedValue() != null) {
                         String dades[] = {
                             lista.getSelectedValue().equals("Batxiller") ? "0" : "1",
-                            batxNfp ? listaBatx.getSelectedValue().toString().toLowerCase() : listaFp.getSelectedValue().toString().toLowerCase(),
                             codi.getText()
                         };
                         return dades;

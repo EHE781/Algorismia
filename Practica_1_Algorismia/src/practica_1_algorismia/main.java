@@ -48,6 +48,7 @@ public class main {
          */
         //ALTA CURS Y ALTA ASSIGNATURA FUNCIONAN no diré perfecto pq faltan controles de exceptions,
         //pero si eres usuario no tocon funcionan.
+        //MIRAR AHORRAR CODIGO 0, 1
     }
 
     void matricularEstudiant(String nom, String dni, String codiAssignatura) {
@@ -101,12 +102,6 @@ public class main {
     //0 si es bachiller, 1 si es FP
     //c_t val credits si es obligatoria i tipus si es optativa                  
 
-    //??????????????????????????????????????????????????????????????????????????????????????????????????????
-    //???   Podria ser que no, pero todas las comprobaciones de altaAssignatura puede que sean demas?    ???
-    //???   Porque igualmente solo se llama altaAssignatura al dar de alta un curso, por lo que la mitad ???
-    //???   del metodo de comprobaciones y tal seria quitable de cara a que cuando inicias un curso      ???
-    //???   luego das de alta sus asignaturas, por lo que OBVIAMENTE seran de ese curso                  ???
-    //??????????????????????????????????????????????????????????????????????????????????????????????????????
     void altaAssignatura(int curs, String especialitat, int codiCurs, String nom, String codi, String tipus, String c_t) {
         curs aux = cursos.getPrimer();
         boolean cursTrobat = false;
@@ -160,7 +155,7 @@ public class main {
             JOptionPane.showMessageDialog(null, "No es pot crear la assignatura!");
         }
     }
-
+//posar codiCurs
     void baixaAssignatura(int codi) {
         boolean cursTrobat = false;
         assignatura auxPrint = null;
@@ -221,25 +216,25 @@ public class main {
             b.setEspecialitat(batxiller.especialitat.valueOf(especialitat));
             b.posarNom("Curs de " + especialitat + " de batxiller");
             b.posarCodi(codi);
-            cursos.insertar((curs) b);
+            cursos.insertar(b);
         } else {
             FP fp = new FP();
             fp.setEspecialitat(FP.especialitat.valueOf(especialitat));
             fp.posarNom("Curs de " + especialitat + " de FP");
             fp.posarCodi(codi);
-            cursos.insertar((curs) fp);
+            cursos.insertar(fp);
         }
     }
 
     //Tipus = 0 si batxiller, 1 si FP
-    void baixaCurs(int tipus, String especialitat, int codiCurs) {
+    void baixaCurs(int tipus, int codiCurs) {
         curs aux = cursos.getPrimer();
         //Cas batxiller
         while (aux != null) {
             if (tipus == 0) {
                 if (aux instanceof batxiller) {
                     batxiller b = (batxiller) aux;
-                    if (b.getEspecialitat() == batxiller.especialitat.valueOf(especialitat) && b.getCodi() == codiCurs) {
+                    if (b.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         int baixes[] = new int[b.getLlistaAssign().size()];
                         for (assignatura i : b.getLlistaAssign()) {
@@ -257,7 +252,7 @@ public class main {
             } else {
                 if (aux instanceof FP) {
                     FP fp = (FP) aux;
-                    if (fp.getEspecialitat() == FP.especialitat.valueOf(especialitat) && fp.getCodi() == codiCurs) {
+                    if (fp.getCodi() == codiCurs) {
                         //borrar curs, assignatures, desmatricular estudents, ver si ya no estan borrarlos etc
                         int baixes[] = new int[fp.getLlistaAssign().size()];
                         for (assignatura i : fp.getLlistaAssign()) {
@@ -273,6 +268,10 @@ public class main {
                     }
                 }
             }
+            aux = aux.getSeg();
+        }
+        if(aux == null){
+            JOptionPane.showMessageDialog(null, "No s'ha trobat el curs, no existeix!");
         }
     }
 }
