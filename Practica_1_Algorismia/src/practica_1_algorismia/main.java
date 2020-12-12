@@ -67,7 +67,7 @@ public class main {
                             est = new estudiant(nom, dni);
                             estudiants.insertar(est);
                         } else {
-                            //Si s'ha trobat l'estudiant i nom no coincideix
+                            //Si s'ha trobat l'estudiant i DNIs iguals
                             if (!est.getNom().equals(nom)) {
                                 break;
                             }
@@ -112,7 +112,7 @@ public class main {
     //0 si es bachiller, 1 si es FP
     //c_t val credits si es obligatoria i tipus si es optativa                  
 
-    void altaAssignatura(int curs, String especialitat, int codiCurs, String nom, String codi, String tipus, String c_t) {
+    public boolean altaAssignatura(int curs, String especialitat, int codiCurs, String nom, String codi, String tipus, String c_t) {
         curs aux = cursos.getPrimer();
         boolean cursTrobat = false;
         if (curs == 0) {
@@ -135,6 +135,9 @@ public class main {
                                 assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
                                 auxB.getLlistaAssign().insertar(assignatura);
                             }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ja existeix una assginatura amb aquest codi!");
+                            return true;
                         }
                     }
                 }
@@ -160,6 +163,9 @@ public class main {
                                 assignatura.posarPerfil(optativa.perfil.valueOf(c_t));
                                 auxFp.getLlistaAssign().insertar(assignatura);
                             }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ja existeix una assginatura amb aquest codi!");
+                            return true;
                         }
                     }
                 }
@@ -167,49 +173,35 @@ public class main {
             }
         } else {
             JOptionPane.showMessageDialog(null, "No es pot crear la assignatura!");
+            return true;
         }
+        return false;
     }
 //posar codiCurs
 
-    void baixaAssignatura(int codi) {
+    void baixaAssignatura(int codiCurs, int codi) {
         boolean cursTrobat = false;
         assignatura auxPrint = null;
-        curs aux = cursos.getPrimer();
-        while (aux != null && !cursTrobat) {
-            if (aux instanceof batxiller) {
-                batxiller b = (batxiller) aux;
-                llistaAssignatures iterador = b.getLlistaAssign();
-                if (iterador.trobar(String.valueOf(codi)) != null) {
-                    cursTrobat = true;
-                    auxPrint = iterador.trobar(String.valueOf(codi));
-                    nodoEstudiant e = auxPrint.llista.getPrimer();
-                    while (e != null) {
-                        e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
-                        if (e.getEstudiant().getLlistaAssignatures().buida()) {
-                            estudiants.borrar(e.getEstudiant().getDni());
-                        }
-                        e = e.seguent();
+        if (cursos.trobar(String.valueOf(codiCurs)) != null) {
+            curs aux = cursos.trobar(String.valueOf(codiCurs));
+            llistaAssignatures iterador = aux.getLlistaAssign();
+            if (iterador.trobar(String.valueOf(codi)) != null) {
+                cursTrobat = true;
+                auxPrint = iterador.trobar(String.valueOf(codi));
+                nodoEstudiant e = auxPrint.llista.getPrimer();
+                while (e != null) {
+                    e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
+                    if (e.getEstudiant().getLlistaAssignatures().buida()) {
+                        estudiants.borrar(e.getEstudiant().getDni());
                     }
-                    iterador.borrar(String.valueOf(codi));
+                    e = e.seguent();
                 }
-            } else {
-                FP fp = (FP) aux;
-                llistaAssignatures iterador = fp.getLlistaAssign();
-                if (iterador.trobar(String.valueOf(codi)) != null) {
-                    cursTrobat = true;
-                    auxPrint = iterador.trobar(String.valueOf(codi));
-                    nodoEstudiant e = auxPrint.llista.getPrimer();
-                    while (e != null) {
-                        e.getEstudiant().getLlistaAssignatures().borrar(String.valueOf(codi));
-                        if (e.getEstudiant().getLlistaAssignatures().buida()) {
-                            estudiants.borrar(e.getEstudiant().getDni());
-                        }
-                        e = e.seguent();
-                    }
-                    iterador.borrar(String.valueOf(codi));
+                iterador.borrar(String.valueOf(codi));
+                if (iterador.buida()) {
+                    baixaCurs(aux instanceof batxiller ? 0 : 1, aux.getCodi());
+                    JOptionPane.showMessageDialog(null, "El curs es donarà de baixa perquè no queden assignatures!");
                 }
             }
-            aux = aux.getSeg();
         }
         if (cursTrobat) {
             if (auxPrint instanceof obligatoria) {
@@ -251,7 +243,7 @@ public class main {
         if (!trobat) {
             JOptionPane.showMessageDialog(null, "El curs ja existeix!");
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -271,7 +263,7 @@ public class main {
                             baixes[b.getLlistaAssign().indexOf(i)] = i.getCodi();
                         }
                         for (int i = 0; i < baixes.length; i++) {
-                            baixaAssignatura(baixes[i]);
+                            baixaAssignatura(codiCurs, baixes[i]);
                         }
                         b.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso
@@ -289,7 +281,7 @@ public class main {
                             baixes[fp.getLlistaAssign().indexOf(i)] = i.getCodi();
                         }
                         for (int i = 0; i < baixes.length; i++) {
-                            baixaAssignatura(baixes[i]);
+                            baixaAssignatura(codiCurs, baixes[i]);
                         }
                         fp.getLlistaAssign().clear();
                         //Despues de haber borrado las asignaturas del curso borramos curso
@@ -315,9 +307,11 @@ public class main {
                     break;
                 }
             }
-            break;
+            if (trobat) {
+                break;
+            }
+            aux = aux.getSeg();
         }
-        aux = aux.getSeg();
         return trobat;
     }
 }

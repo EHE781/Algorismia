@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -38,12 +39,17 @@ public class interfaceGrafica extends JFrame {
     private final String[] nom_elements = {"Matricular estudiant", "Donar de alta curs",
         "Donar de baixa curs", "Donar de baixa assignatura"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
-    private String imatgeLogo = "logo.png";
+    private final int BOTONS_OPERACIONS = 3;//3 diferents imprimirs
+    private String imatgeLogo = "resources/logo.png";
     private main principal;
     private JTextArea texte = null;
 
     public interfaceGrafica(main principal) {
         this.principal = principal;
+        Dimension midaPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(midaPantalla);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setUndecorated(true);
         this.setLayout(new BorderLayout());
         this.inicialitzaNord();
         this.inicialitzaCentre();
@@ -87,18 +93,157 @@ public class interfaceGrafica extends JFrame {
         JPanel elements = new JPanel();
         elements.setLayout(new GridLayout(BOTONS_ELEMENTS, 1));
         JPanel operacions = new JPanel();
-        JButton imprimidor = new JButton("Imprimir");
-        JButton impresiones[] = new JButton[3];
+        operacions.setLayout(new GridLayout(BOTONS_OPERACIONS, 1));
+        JButton botoCurs = new JButton("Imprimir curs");
+        JButton botoAssignatura = new JButton("Imprimir assignatura");
+        JButton botoEstudiant = new JButton("Imprimir estudiant");
         ActionListener imprimirCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                String impresion = "";
                 //preguntar que curso imprimir
-                //imprimir ese curso
+                JTextField res = new JTextField();
+                JOptionPane.showConfirmDialog(null, res, "Quin curs imprimir?:", JOptionPane.OK_CANCEL_OPTION);
+                int codiCurs = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
+                if (codiCurs == -1) {
+                    JOptionPane.showMessageDialog(null, "No es pot llegir el codi!");
+                } //imprimir ese curso
+                else {
+                    if (principal.getCursos().trobar(String.valueOf(codiCurs)) != null) {
+                        if (principal.getCursos().trobar(String.valueOf(codiCurs)) instanceof batxiller) {
+                            batxiller b = (batxiller) principal.getCursos().trobar(String.valueOf(codiCurs));
+                            String codis[] = new String[b.getLlistaAssign().size()];
+                            impresion += b.imprimir();
+                            impresion += "---------------------------------------------------------------------------------\n";
+                            impresion += "Conté les seguents assignatures:\n\n";
+                            for (assignatura a : b.getLlistaAssign()) {
+                                impresion += a.imprimir();
+                                codis[b.getLlistaAssign().indexOf(a)] = String.valueOf(a.getCodi());
+                                nodoEstudiant est = a.llista.getPrimer();
+                                while (est != null) {
+                                    estudiant e = est.getEstudiant();
+                                    impresion += e.imprimirEstudiant();
+                                    impresion += "\n\n";
+                                    est = est.seguent();
+                                }
+                                impresion += "\n";
+                            }
+                        } else {
+                            FP fp = (FP) principal.getCursos().trobar(String.valueOf(codiCurs));
+                            String codis[] = new String[fp.getLlistaAssign().size()];
+                            impresion += fp.imprimir();
+                            impresion += "---------------------------------------------------------------------------------\n";
+                            impresion += "Conté les seguents assignatures:\n";
+                            for (assignatura a : fp.getLlistaAssign()) {
+                                impresion += a.imprimir();
+                                codis[fp.getLlistaAssign().indexOf(a)] = String.valueOf(a.getCodi());
+                                nodoEstudiant est = a.llista.getPrimer();
+                                while (est != null) {
+                                    estudiant e = est.getEstudiant();
+                                    impresion += "\n";
+                                    impresion += e.imprimirEstudiant();
+                                    impresion += "\n\n";
+                                    est = est.seguent();
+                                }
+                                impresion += "\n";
+                            }
+                        }
+                        texte.setText(impresion);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No existeix el curs!");
+                    }
+
+                }
                 //imprimir las asignaturas que tiene
                 //imprimir estudiantes matricualdos a cada asginatura
             }
-            
+
         };
+        ActionListener imprimirAssignatura = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String impresion = "";
+                JTextField res = new JTextField();
+                JOptionPane.showConfirmDialog(null, res, "Quin es el codi?", JOptionPane.OK_CANCEL_OPTION);
+                int codi = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
+                if (codi != -1) {
+                    curs aux = principal.getCursos().getPrimer();
+                    assignatura a = null;
+                    while (aux != null) {
+                        a = aux.getLlistaAssign().trobar(String.valueOf(codi));
+                        if (a != null) {
+                            impresion += a.imprimir();
+                            impresion += "\n";
+                            impresion += "--------------------------------------------------------------------\n";
+                            if (aux instanceof batxiller) {
+                                batxiller b = (batxiller) aux;
+                                impresion += b.imprimir();
+                                impresion += "\n\n";
+                            } else {
+                                FP fp = (FP) aux;
+                                impresion += fp.imprimir();
+                                impresion += "\n\n";
+                            }
+                            break;
+                        }
+                        aux = aux.getSeg();
+                    }
+                    if (a != null) {
+                        nodoEstudiant est = a.llista.getPrimer();
+                        while (est != null) {
+                            estudiant e = est.getEstudiant();
+                            impresion += e.imprimirEstudiant();
+                            impresion += "\n\n";
+                            est = est.seguent();
+                        }
+                        impresion += "\n";
+                        texte.setText(impresion);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
+                }
+            }
+
+        };
+        ActionListener imprimirEstudiant = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String impresion = "";
+                JTextField res = new JTextField();
+                JOptionPane.showConfirmDialog(null, res, "Quin es el DNI de l'estudiant?", JOptionPane.OK_CANCEL_OPTION);
+                estudiant est = principal.getEstudiants().trobar(res.getText());
+                if (est != null) {
+                    impresion += est.imprimirEstudiant();
+                    impresion += "--------------------------------------------------------------------\n";
+                    for (assignatura a : est.getLlistaAssignatures()) {
+                        impresion += a.imprimir();
+                        curs aux = principal.getCursos().getPrimer();
+                        while (aux != null) {
+                            if (aux.getLlistaAssign().trobar(String.valueOf(a.getCodi())) != null) {
+                                impresion += "Pertany al curs:\n";
+                                if (aux instanceof batxiller) {
+                                    batxiller b = (batxiller) aux;
+                                    impresion += b.imprimir();
+                                } else {
+                                    FP fp = (FP) aux;
+                                    impresion += fp.imprimir();
+                                }
+                                impresion += "\n\n";
+                                break;
+                            }
+                            aux = aux.getSeg();
+                        }
+                    }
+                    texte.setText(impresion);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No existeix l'estudiant!");
+                }
+            }
+
+        };
+        /*
         ActionListener escuchador = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -139,13 +284,16 @@ public class interfaceGrafica extends JFrame {
                     auxE = auxE.seguent();
                 }
                 texte.setText(impresion);
-                //setVisible(false);
-                //setVisible(true);
             }
 
         };
-        imprimidor.addActionListener(escuchador);
-        operacions.add(imprimidor);
+         */
+        botoCurs.addActionListener(imprimirCurs);
+        botoAssignatura.addActionListener(imprimirAssignatura);
+        botoEstudiant.addActionListener(imprimirEstudiant);
+        operacions.add(botoCurs);
+        operacions.add(botoAssignatura);
+        operacions.add(botoEstudiant);
         JButton botonsElements[] = new JButton[BOTONS_ELEMENTS];
         ActionListener accions[] = new ActionListener[BOTONS_ELEMENTS];
         //faltan 3 actionListeners de las 3 acciones que faltan
@@ -174,10 +322,10 @@ public class interfaceGrafica extends JFrame {
         ActionListener baixaCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try{
-                String infoCurs[] = obrirEmergentBaixaCurs();
-                principal.baixaCurs(Integer.parseInt(infoCurs[0]), Integer.parseInt(infoCurs[1]));
-                }catch(Exception e){
+                try {
+                    String infoCurs[] = obrirEmergentBaixaCurs();
+                    principal.baixaCurs(Integer.parseInt(infoCurs[0]), Integer.parseInt(infoCurs[1]));
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No s'ha pogut donar de baixa correctament!");
                 }
             }
@@ -185,9 +333,9 @@ public class interfaceGrafica extends JFrame {
         ActionListener baixaAssignatura = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int codi = obrirEmergentBorrarAssignatura();
-                if (codi != -1) {
-                    principal.baixaAssignatura(codi);
+                int dades[] = obrirEmergentBorrarAssignatura();
+                if (dades[0] != -1 && dades[1] != -1) {
+                    principal.baixaAssignatura(dades[0], dades[1]);
                 } else {
                     JOptionPane.showMessageDialog(null, "No s'ha detectat cap codi vàlid!");
                 }
@@ -205,9 +353,27 @@ public class interfaceGrafica extends JFrame {
             boto.addActionListener(accions[i]);
         }
         JPanel elemOp = new JPanel();
-        elemOp.setLayout(new GridLayout(2, 1));
+        elemOp.setLayout(new GridLayout(5, 1));
+        JLabel titolOperacions = new JLabel("<html><h3>Operacions</h3></html>", SwingConstants.CENTER);
+        JLabel titolImpresions = new JLabel("<html><h3>Impresions</h3></html>", SwingConstants.CENTER);
+        elemOp.add(titolOperacions);
         elemOp.add(elements);
+        elemOp.add(titolImpresions);
         elemOp.add(operacions);
+        JPanel tancament = new JPanel();
+        JButton tancar = new JButton("Sortir");
+        tancar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+
+        });
+        JLabel exit = new JLabel("Sortir del programa", SwingConstants.CENTER);
+        tancament.setLayout(new GridLayout(2, 1));
+        tancament.add(exit);
+        tancament.add(tancar);
+        elemOp.add(tancament);
         this.add(elemOp, BorderLayout.WEST);
     }
 
@@ -228,25 +394,34 @@ public class interfaceGrafica extends JFrame {
     }
 
     //Retorna el codi o -1 si no es fica cap codi
-    public int obrirEmergentBorrarAssignatura() {
+    public int[] obrirEmergentBorrarAssignatura() {
         JTextField codi = new JTextField();
+        JTextField codiCurs = new JTextField();
         Object dades[] = {
+            "Codi del curs en el que es troba: ", codiCurs,
             "Codi assignatura a borrar: ", codi
         };
         JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
         //Si codi es null, retornam -1
-        return "".equals(codi.getText()) || !esNumero(codi.getText()) ? -1 : Integer.parseInt(codi.getText());
+        int resultats[] = {
+            "".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText()),
+            "".equals(codi.getText()) || !esNumero(codi.getText()) ? -1 : Integer.parseInt(codi.getText())
+        };
+        return resultats;
     }
-    private boolean esNumero(String nr){
-        try{
+
+    private boolean esNumero(String nr) {
+        try {
             int i = Integer.parseInt(nr);
             return true;
-        }catch(NumberFormatException e){ 
+        } catch (NumberFormatException e) {
             return false;
         }
     }
+
     public void obrirEmergentAltaCurs() {
         JTextField nr = new JTextField();
+        boolean problema = false;
         String[] nomTipusCurs = {"Batxiller", "FP"};
         String nomEspecialitat = "";
         JList tipusCurs = new JList<String>(nomTipusCurs);
@@ -297,8 +472,11 @@ public class interfaceGrafica extends JFrame {
 
                             String nova[] = obrirEmergentAssignatura();
                             //en tipus es si es de batxiller o FP
-                            principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
+                            problema = principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
                         }
+                    }
+                    if (problema && res != JOptionPane.OK_OPTION) {
+                        principal.baixaCurs(tipus, Integer.parseInt(codiCurs.getText()));
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No es possible!");
