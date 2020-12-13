@@ -473,9 +473,12 @@ public class interfaceGrafica extends JFrame {
                             String nova[] = obrirEmergentAssignatura();
                             //en tipus es si es de batxiller o FP
                             problema = principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
+                            if (problema){
+                                break;
+                            }
                         }
                     }
-                    if (problema && res != JOptionPane.OK_OPTION) {
+                    if (problema || res != JOptionPane.OK_OPTION) {
                         principal.baixaCurs(tipus, Integer.parseInt(codiCurs.getText()));
                     }
                 } catch (Exception e) {
