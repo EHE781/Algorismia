@@ -6,6 +6,7 @@
 package practica_1_algorismia;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -42,7 +43,7 @@ public class interfaceGrafica extends JFrame {
                                            "<html><h2>Donar de baixa curs</h2></html>", 
                                            "<html><h2>Donar de baixa assignatura</h2></html>"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
-    private final int BOTONS_OPERACIONS = 3;//3 diferents imprimirs
+    private final int BOTONS_OPERACIONS = 2;//3 diferents imprimirs
     private String imatgeLogo = "resources/logo.png";
     private main principal;
     private JTextArea texte = null;
@@ -66,6 +67,7 @@ public class interfaceGrafica extends JFrame {
     //Logo de l'escola, i rellotge.
     private void inicialitzaNord() {
         JPanel tiraSuperior = new JPanel();
+        tiraSuperior.setLayout(new FlowLayout());
         JLabel logo = new JLabel();
         Image imatge = null;
         BufferedImage img = null;
@@ -80,9 +82,9 @@ public class interfaceGrafica extends JFrame {
         logo.setSize(200, 100);
         JLabel blank = new JLabel("<html><h1>Gestionador de cursos</title></h1>", SwingConstants.CENTER);
         blank.setSize(600, 100);
-        blank.setMinimumSize(new Dimension(600, 100));
-        blank.setMaximumSize(new Dimension(600, 100));
-        blank.setPreferredSize(new Dimension(600, 100));
+        blank.setMinimumSize(new Dimension(1150, 100));
+        blank.setMaximumSize(new Dimension(1150, 100));
+        blank.setPreferredSize(new Dimension(1150, 100));
         JLabel temps = new JLabel();
         temps.setSize(50, 100);
         tiraSuperior.add(logo);
@@ -95,11 +97,25 @@ public class interfaceGrafica extends JFrame {
     private void inicialitzaOest() {
         JPanel elements = new JPanel();
         elements.setLayout(new GridLayout(BOTONS_ELEMENTS, 1));
+        elements.setBackground(Color.cyan);
         JPanel operacions = new JPanel();
-        operacions.setLayout(new GridLayout(BOTONS_OPERACIONS, 1));
+        operacions.setLayout(new GridLayout(BOTONS_OPERACIONS, 2));
+        operacions.setBackground(Color.GREEN);
         JButton botoCurs = new JButton("<html><h2>Imprimir curs</h2></html>");
         JButton botoAssignatura = new JButton("<html><h2>Imprimir assignatura</h2></html>");
         JButton botoEstudiant = new JButton("<html><h2>Imprimir estudiant</h2></html>");
+        JButton limpiar = new JButton("<html><h2>Limpiar Consola Info</h2></html>");
+        //modificable
+        botoCurs.setBackground(Color.YELLOW);
+        botoAssignatura.setBackground(Color.yellow);
+        botoEstudiant.setBackground(Color.yellow);
+        limpiar.setBackground(Color.lightGray);
+        limpiar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                texte.setText("");
+            }
+        });
         ActionListener imprimirCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -297,6 +313,7 @@ public class interfaceGrafica extends JFrame {
         operacions.add(botoCurs);
         operacions.add(botoAssignatura);
         operacions.add(botoEstudiant);
+        operacions.add(limpiar);
         JButton botonsElements[] = new JButton[BOTONS_ELEMENTS];
         ActionListener accions[] = new ActionListener[BOTONS_ELEMENTS];
         //faltan 3 actionListeners de las 3 acciones que faltan
@@ -326,8 +343,8 @@ public class interfaceGrafica extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    String infoCurs[] = obrirEmergentBaixaCurs();
-                    principal.baixaCurs(Integer.parseInt(infoCurs[0]), Integer.parseInt(infoCurs[1]));
+                    String infoCurs = obrirEmergentBaixaCurs();
+                    principal.baixaCurs(Integer.parseInt(infoCurs));
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No s'ha pogut donar de baixa correctament!");
                 }
@@ -354,6 +371,7 @@ public class interfaceGrafica extends JFrame {
             elements.add(boto);
             botonsElements[i] = boto;
             boto.addActionListener(accions[i]);
+            boto.setBackground(Color.green);
         }
         JPanel elemOp = new JPanel();
         elemOp.setLayout(new GridLayout(5, 1));
@@ -374,6 +392,7 @@ public class interfaceGrafica extends JFrame {
         });
         JLabel exit = new JLabel("<html><h1>Sortir del programa</h1></html>", SwingConstants.CENTER);
         tancament.setLayout(new GridLayout(2, 1));
+        tancar.setBackground(Color.RED);
         tancament.add(exit);
         tancament.add(tancar);
         elemOp.add(tancament);
@@ -476,25 +495,27 @@ public class interfaceGrafica extends JFrame {
 
                             String nova[] = obrirEmergentAssignatura();
                             //en tipus es si es de batxiller o FP
-                            problema = principal.altaAssignatura(tipus, nomEspecialitat, Integer.parseInt(codiCurs.getText()), nova[0], nova[1], nova[2], nova[3]);
+                            problema = principal.altaAssignatura(codiCurs.getText(), nova[0], nova[1], nova[2], nova[3]);
                             if (problema){
                                 break;
                             }
                         }
                     }
                     if (problema || res != JOptionPane.OK_OPTION) {
-                        principal.baixaCurs(tipus, Integer.parseInt(codiCurs.getText()));
+                        principal.baixaCurs(Integer.parseInt(codiCurs.getText()));
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No es possible!");
+                    principal.baixaCurs(Integer.parseInt(codiCurs.getText()));
+                    
                 }
             }
         }
     }
 
-    public String[] obrirEmergentBaixaCurs() {
-        String tipus[] = {"Batxiller", "FP"};
-        JList lista = new JList<String>(tipus);
+    public String obrirEmergentBaixaCurs() {
+        //String tipus[] = {"Batxiller", "FP"};
+        //JList lista = new JList<String>(tipus);
         boolean batxNfp = false;
         String batx[] = new String[batxiller.especialitat.values().length];
         String fp[] = new String[FP.especialitat.values().length];
@@ -502,33 +523,28 @@ public class interfaceGrafica extends JFrame {
         JList listaBatx = new JList(batx);
         JList listaFp = new JList(fp);
         try {
-            if (JOptionPane.showConfirmDialog(null, lista, "Tipus", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-                if (lista.getSelectedValue().equals(tipus[0])) {
-                    for (batxiller.especialitat i : batxiller.especialitat.values()) {
-                        batx[cont] = i.toString();
-                        cont++;
-                    }
-                    batxNfp = true;
-                }
-                if (lista.getSelectedValue().equals(tipus[1])) {
-                    for (FP.especialitat i : FP.especialitat.values()) {
-                        fp[cont] = i.toString();
-                        cont++;
-                    }
-                }
+//            if (JOptionPane.showConfirmDialog(null, lista, "Tipus", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+//                if (lista.getSelectedValue().equals(tipus[0])) {
+//                    for (batxiller.especialitat i : batxiller.especialitat.values()) {
+//                        batx[cont] = i.toString();
+//                        cont++;
+//                    }
+//                    batxNfp = true;
+//                }
+//                if (lista.getSelectedValue().equals(tipus[1])) {
+//                    for (FP.especialitat i : FP.especialitat.values()) {
+//                        fp[cont] = i.toString();
+//                        cont++;
+//                    }
+//                }
                 JTextField codi = new JTextField();
                 Object demanar[] = {
                     "Quin es el codi (numeric)?: ", codi};
-                if (JOptionPane.showConfirmDialog(null, demanar, "Especialitat?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-                    if (lista.getSelectedValue() != null) {
-                        String dades[] = {
-                            lista.getSelectedValue().equals("Batxiller") ? "0" : "1",
-                            codi.getText()
-                        };
+                if (JOptionPane.showConfirmDialog(null, demanar, "CODI?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                        String dades = codi.getText();
+                        //"".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText())
                         return dades;
-                    }
-                }
-            }
+                }   
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Dades o botons incorrectes!");
         }
