@@ -67,6 +67,7 @@ public class interfaceGrafica extends JFrame {
     //Logo de l'escola, i rellotge.
     private void inicialitzaNord() {
         JPanel tiraSuperior = new JPanel();
+        tiraSuperior.setBackground(new Color(216, 92, 213));
         tiraSuperior.setLayout(new FlowLayout());
         JLabel logo = new JLabel();
         Image imatge = null;
@@ -81,6 +82,8 @@ public class interfaceGrafica extends JFrame {
         logo.setIcon(new ImageIcon(img));
         logo.setSize(200, 100);
         JLabel blank = new JLabel("<html><h1>Gestionador de cursos</title></h1>", SwingConstants.CENTER);
+        blank.setOpaque(true);
+        blank.setBackground(new Color(183, 0, 183));
         blank.setSize(600, 100);
         blank.setMinimumSize(new Dimension(1150, 100));
         blank.setMaximumSize(new Dimension(1150, 100));
@@ -104,7 +107,7 @@ public class interfaceGrafica extends JFrame {
         JButton botoCurs = new JButton("<html><h2>Imprimir curs</h2></html>");
         JButton botoAssignatura = new JButton("<html><h2>Imprimir assignatura</h2></html>");
         JButton botoEstudiant = new JButton("<html><h2>Imprimir estudiant</h2></html>");
-        JButton limpiar = new JButton("<html><h2>Limpiar Consola Info</h2></html>");
+        JButton limpiar = new JButton("<html><h2>Borrar text imprimit</h2></html>");
         //modificable
         botoCurs.setBackground(Color.YELLOW);
         botoAssignatura.setBackground(Color.yellow);
@@ -122,7 +125,12 @@ public class interfaceGrafica extends JFrame {
                 String impresion = "";
                 //preguntar que curso imprimir
                 JTextField res = new JTextField();
-                JOptionPane.showConfirmDialog(null, res, "Quin curs imprimir?:", JOptionPane.OK_CANCEL_OPTION);
+                JLabel missatge = new JLabel("Codi del curs:");
+                missatge.setFont(new Font("Arial", Font.BOLD, 18));
+                Object pregunta[] = {
+                missatge, res
+                };
+                JOptionPane.showConfirmDialog(null, pregunta, "Quin curs imprimir?:", JOptionPane.OK_CANCEL_OPTION);
                 int codiCurs = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
                 if (codiCurs == -1) {
                     JOptionPane.showMessageDialog(null, "No es pot llegir el codi!");
@@ -183,7 +191,12 @@ public class interfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 String impresion = "";
                 JTextField res = new JTextField();
-                JOptionPane.showConfirmDialog(null, res, "Quin es el codi?", JOptionPane.OK_CANCEL_OPTION);
+                JLabel missatge = new JLabel("Codi del curs?");
+                missatge.setFont(new Font("Arial", Font.BOLD, 18));
+                Object pregunta[] = {
+                missatge, res
+                };
+                JOptionPane.showConfirmDialog(null, pregunta, "Quin es el codi?", JOptionPane.OK_CANCEL_OPTION);
                 int codi = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
                 if (codi != -1) {
                     curs aux = principal.getCursos().getPrimer();
@@ -218,10 +231,10 @@ public class interfaceGrafica extends JFrame {
                         impresion += "\n";
                         texte.setText(impresion);
                     }else{
-                        JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
+                        JOptionPane.showMessageDialog(null, "No existeix l'assignatura o el curs");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
+                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura o el curs");
                 }
             }
 
@@ -231,7 +244,12 @@ public class interfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 String impresion = "";
                 JTextField res = new JTextField();
-                JOptionPane.showConfirmDialog(null, res, "Quin es el DNI de l'estudiant?", JOptionPane.OK_CANCEL_OPTION);
+                JLabel missatge = new JLabel("DNI de l'estudiant?");
+                missatge.setFont(new Font("Arial", Font.BOLD, 18));
+                Object pregunta[] = {
+                missatge, res
+                };
+                JOptionPane.showConfirmDialog(null, pregunta, "Quin es el DNI de l'estudiant?", JOptionPane.OK_CANCEL_OPTION);
                 estudiant est = principal.getEstudiants().trobar(res.getText());
                 if (est != null) {
                     impresion += est.imprimirEstudiant();
@@ -262,51 +280,6 @@ public class interfaceGrafica extends JFrame {
             }
 
         };
-        /*
-        ActionListener escuchador = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                String impresion = "";
-                impresion += "Els cursos actuals son: \n";
-                curs auxC = principal.getCursos().getPrimer();
-                while (auxC != null) {
-                    if (auxC instanceof batxiller) {
-                        batxiller b = (batxiller) auxC;
-                        impresion += "El curs s'anomena " + b.getNom() + ", amc codi: " + b.getCodi() + ", i especialitat: " + b.getEspecialitat().toString() + "\n";
-                        impresion += "Conté les seguents assignatures:\n";
-                        for (assignatura a : b.getLlistaAssign()) {
-                            impresion += a.imprimir() + "\n";
-                        }
-                        impresion += "\n\n";
-                    } else {
-                        FP fp = (FP) auxC;
-                        impresion += "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n";
-                        impresion += "El curs s'anomena " + fp.getNom() + ", amc codi: " + fp.getCodi() + ", i especialitat: " + fp.getEspecialitat().toString() + "\n";
-                        impresion += "Conté les seguents assignatures:\n";
-                        for (assignatura a : fp.getLlistaAssign()) {
-                            impresion += a.imprimir() + "\n";
-                        }
-                        impresion += "\n\n";
-                    }
-                    auxC = auxC.getSeg();
-                }
-                impresion += "--------------------------------------------------------------------\n";
-                impresion += "En quant als estudiants, matriculats tenim: \n";
-                nodoEstudiant auxE = principal.getEstudiants().getPrimer();
-                while (auxE != null) {
-                    impresion += "····································································\n";
-                    estudiant auxe = auxE.getEstudiant();
-                    impresion += auxe.getNom() + ", amd DNI: " + auxe.getDni() + " matriculat a: \n";
-                    for (assignatura a : auxe.getLlistaAssignatures()) {
-                        impresion += a.imprimir() + "\n";
-                    }
-                    auxE = auxE.seguent();
-                }
-                texte.setText(impresion);
-            }
-
-        };
-         */
         botoCurs.addActionListener(imprimirCurs);
         botoAssignatura.addActionListener(imprimirAssignatura);
         botoEstudiant.addActionListener(imprimirEstudiant);
@@ -376,7 +349,11 @@ public class interfaceGrafica extends JFrame {
         JPanel elemOp = new JPanel();
         elemOp.setLayout(new GridLayout(5, 1));
         JLabel titolOperacions = new JLabel("<html><h1>Operacions</h1></html>", SwingConstants.CENTER);
-        JLabel titolImpresions = new JLabel("<html><h1>Impresions</h1></html>", SwingConstants.CENTER);
+        JLabel titolImpresions = new JLabel("<html><h1>Impressions</h1></html>", SwingConstants.CENTER);
+        titolOperacions.setOpaque(true);
+        titolImpresions.setOpaque(true);
+        titolOperacions.setBackground(new Color(83, 255, 83));
+        titolImpresions.setBackground(new Color(255, 255, 83));
         elemOp.add(titolOperacions);
         elemOp.add(elements);
         elemOp.add(titolImpresions);
@@ -391,6 +368,8 @@ public class interfaceGrafica extends JFrame {
 
         });
         JLabel exit = new JLabel("<html><h1>Sortir del programa</h1></html>", SwingConstants.CENTER);
+        exit.setOpaque(true);
+        exit.setBackground(new Color(255, 83, 83));
         tancament.setLayout(new GridLayout(2, 1));
         tancar.setBackground(Color.RED);
         tancament.add(exit);
@@ -420,9 +399,13 @@ public class interfaceGrafica extends JFrame {
     public int[] obrirEmergentBorrarAssignatura() {
         JTextField codi = new JTextField();
         JTextField codiCurs = new JTextField();
+        JLabel m1 = new JLabel("Codi del curs en el que es troba: ");
+        JLabel m2 = new JLabel("Codi assignatura a borrar: ");
+        m1.setFont(new Font("Arial", Font.BOLD, 18));
+        m2.setFont(new Font("Arial", Font.BOLD, 18));
         Object dades[] = {
-            "Codi del curs en el que es troba: ", codiCurs,
-            "Codi assignatura a borrar: ", codi
+            m1, codiCurs,
+            m2, codi
         };
         JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
         //Si codi es null, retornam -1
@@ -448,10 +431,15 @@ public class interfaceGrafica extends JFrame {
         String[] nomTipusCurs = {"Batxiller", "FP"};
         String nomEspecialitat = "";
         JList tipusCurs = new JList<String>(nomTipusCurs);
+        tipusCurs.setFont(new Font("Arial", Font.BOLD, 16));
         boolean batxNfp = false;
+        JLabel m1 = new JLabel("Curs del tipus: ");
+        JLabel m2 = new JLabel("Numero assignatures que tendrà el curs: ");
+        m1.setFont(new Font("Arial", Font.BOLD, 17));
+        m2.setFont(new Font("Arial", Font.BOLD, 17));
         Object info[] = {
-            "Curs del tipus: ", tipusCurs,
-            "Numero assignatures que tendrà el curs: ", nr
+            m1, tipusCurs,
+            m2, nr
         };
         int res = JOptionPane.showConfirmDialog(null, info, "Informació", JOptionPane.OK_CANCEL_OPTION);
         if (res == JOptionPane.OK_OPTION) {
