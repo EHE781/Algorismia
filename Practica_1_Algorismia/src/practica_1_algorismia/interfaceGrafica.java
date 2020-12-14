@@ -8,6 +8,7 @@ package practica_1_algorismia;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -36,8 +37,10 @@ import javax.swing.SwingConstants;
  */
 public class interfaceGrafica extends JFrame {
 
-    private final String[] nom_elements = {"Matricular estudiant", "Donar de alta curs",
-        "Donar de baixa curs", "Donar de baixa assignatura"};
+    private final String[] nom_elements = {"<html><h2>Matricular estudiant</h2></html>",
+                                           "<html><h2>Donar de alta curs</h2></html>",
+                                           "<html><h2>Donar de baixa curs</h2></html>", 
+                                           "<html><h2>Donar de baixa assignatura</h2></html>"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
     private final int BOTONS_OPERACIONS = 3;//3 diferents imprimirs
     private String imatgeLogo = "resources/logo.png";
@@ -75,7 +78,7 @@ public class interfaceGrafica extends JFrame {
         }
         logo.setIcon(new ImageIcon(img));
         logo.setSize(200, 100);
-        JLabel blank = new JLabel("<html><h1>Gestionador de cursos</h1></center></html>", SwingConstants.CENTER);
+        JLabel blank = new JLabel("<html><h1>Gestionador de cursos</title></h1>", SwingConstants.CENTER);
         blank.setSize(600, 100);
         blank.setMinimumSize(new Dimension(600, 100));
         blank.setMaximumSize(new Dimension(600, 100));
@@ -94,9 +97,9 @@ public class interfaceGrafica extends JFrame {
         elements.setLayout(new GridLayout(BOTONS_ELEMENTS, 1));
         JPanel operacions = new JPanel();
         operacions.setLayout(new GridLayout(BOTONS_OPERACIONS, 1));
-        JButton botoCurs = new JButton("Imprimir curs");
-        JButton botoAssignatura = new JButton("Imprimir assignatura");
-        JButton botoEstudiant = new JButton("Imprimir estudiant");
+        JButton botoCurs = new JButton("<html><h2>Imprimir curs</h2></html>");
+        JButton botoAssignatura = new JButton("<html><h2>Imprimir assignatura</h2></html>");
+        JButton botoEstudiant = new JButton("<html><h2>Imprimir estudiant</h2></html>");
         ActionListener imprimirCurs = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -354,14 +357,14 @@ public class interfaceGrafica extends JFrame {
         }
         JPanel elemOp = new JPanel();
         elemOp.setLayout(new GridLayout(5, 1));
-        JLabel titolOperacions = new JLabel("<html><h3>Operacions</h3></html>", SwingConstants.CENTER);
-        JLabel titolImpresions = new JLabel("<html><h3>Impresions</h3></html>", SwingConstants.CENTER);
+        JLabel titolOperacions = new JLabel("<html><h1>Operacions</h1></html>", SwingConstants.CENTER);
+        JLabel titolImpresions = new JLabel("<html><h1>Impresions</h1></html>", SwingConstants.CENTER);
         elemOp.add(titolOperacions);
         elemOp.add(elements);
         elemOp.add(titolImpresions);
         elemOp.add(operacions);
         JPanel tancament = new JPanel();
-        JButton tancar = new JButton("Sortir");
+        JButton tancar = new JButton("<html><h2>Sortir</h2></html>");
         tancar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -369,7 +372,7 @@ public class interfaceGrafica extends JFrame {
             }
 
         });
-        JLabel exit = new JLabel("Sortir del programa", SwingConstants.CENTER);
+        JLabel exit = new JLabel("<html><h1>Sortir del programa</h1></html>", SwingConstants.CENTER);
         tancament.setLayout(new GridLayout(2, 1));
         tancament.add(exit);
         tancament.add(tancar);
@@ -379,6 +382,7 @@ public class interfaceGrafica extends JFrame {
 
     private void inicialitzaCentre() {
         texte = new JTextArea();
+        texte.setFont(new Font("New Times Roman", Font.BOLD, 20));
         texte.setText("Aquí s'imprimirà informació");
         texte.setEditable(false);
         JScrollPane scroll = new JScrollPane(texte);
