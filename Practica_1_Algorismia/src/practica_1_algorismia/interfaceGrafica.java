@@ -191,7 +191,7 @@ public class interfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 String impresion = "";
                 JTextField res = new JTextField();
-                JLabel missatge = new JLabel("Codi del curs?");
+                JLabel missatge = new JLabel("Codi de la assignatura?");
                 missatge.setFont(new Font("Arial", Font.BOLD, 18));
                 Object pregunta[] = {
                 missatge, res
@@ -231,10 +231,10 @@ public class interfaceGrafica extends JFrame {
                         impresion += "\n";
                         texte.setText(impresion);
                     }else{
-                        JOptionPane.showMessageDialog(null, "No existeix l'assignatura o el curs");
+                        JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura o el curs");
+                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
                 }
             }
 
@@ -259,7 +259,7 @@ public class interfaceGrafica extends JFrame {
                         curs aux = principal.getCursos().getPrimer();
                         while (aux != null) {
                             if (aux.getLlistaAssign().trobar(String.valueOf(a.getCodi())) != null) {
-                                impresion += "Pertany al curs:\n";
+                                impresion += "\nPertany al curs:\n";
                                 if (aux instanceof batxiller) {
                                     batxiller b = (batxiller) aux;
                                     impresion += b.imprimir();

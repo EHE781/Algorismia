@@ -21,7 +21,7 @@ public class FP extends curs {
     //Funcions
     @Override
     public String imprimir() {
-        return "CURS DE FP:\n\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n";
+        return "\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n";
     }
 
     @Override

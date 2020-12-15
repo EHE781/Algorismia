@@ -21,7 +21,7 @@ public class batxiller extends curs{
 
     @Override
     public String imprimir() {
-        return "CURS DE BATXILLER:\n\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n"; 
+        return "\nNOM : "+nom+"\nCODI : "+codi+"\nESPECIALITAT : "+type.name()+"\n"; 
     }
 
     @Override
