@@ -39,9 +39,9 @@ import javax.swing.SwingConstants;
 public class interfaceGrafica extends JFrame {
 
     private final String[] nom_elements = {"<html><h2>Matricular estudiant</h2></html>",
-                                           "<html><h2>Donar de alta curs</h2></html>",
-                                           "<html><h2>Donar de baixa curs</h2></html>", 
-                                           "<html><h2>Donar de baixa assignatura</h2></html>"};
+        "<html><h2>Donar de alta curs</h2></html>",
+        "<html><h2>Donar de baixa curs</h2></html>",
+        "<html><h2>Donar de baixa assignatura</h2></html>"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
     private final int BOTONS_OPERACIONS = 2;//3 diferents imprimirs
     private String imatgeLogo = "resources/logo.png";
@@ -113,7 +113,7 @@ public class interfaceGrafica extends JFrame {
         botoAssignatura.setBackground(Color.yellow);
         botoEstudiant.setBackground(Color.yellow);
         limpiar.setBackground(Color.lightGray);
-        limpiar.addActionListener(new ActionListener(){
+        limpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 texte.setText("");
@@ -128,11 +128,11 @@ public class interfaceGrafica extends JFrame {
                 JLabel missatge = new JLabel("Codi del curs:");
                 missatge.setFont(new Font("Arial", Font.BOLD, 18));
                 Object pregunta[] = {
-                missatge, res
+                    missatge, res
                 };
-                JOptionPane.showConfirmDialog(null, pregunta, "Quin curs imprimir?:", JOptionPane.OK_CANCEL_OPTION);
+                int ok = JOptionPane.showConfirmDialog(null, pregunta, "Quin curs imprimir?:", JOptionPane.OK_CANCEL_OPTION);
                 int codiCurs = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
-                if (codiCurs == -1) {
+                if (codiCurs == -1 || ok == JOptionPane.CANCEL_OPTION) {
                     JOptionPane.showMessageDialog(null, "No es pot llegir el codi!");
                 } //imprimir ese curso
                 else {
@@ -194,11 +194,11 @@ public class interfaceGrafica extends JFrame {
                 JLabel missatge = new JLabel("Codi de la assignatura?");
                 missatge.setFont(new Font("Arial", Font.BOLD, 18));
                 Object pregunta[] = {
-                missatge, res
+                    missatge, res
                 };
-                JOptionPane.showConfirmDialog(null, pregunta, "Quin es el codi?", JOptionPane.OK_CANCEL_OPTION);
+                int ok = JOptionPane.showConfirmDialog(null, pregunta, "Quin es el codi?", JOptionPane.OK_CANCEL_OPTION);
                 int codi = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
-                if (codi != -1) {
+                if (codi != -1 && ok == JOptionPane.OK_OPTION) {
                     curs aux = principal.getCursos().getPrimer();
                     assignatura a = null;
                     while (aux != null) {
@@ -230,11 +230,11 @@ public class interfaceGrafica extends JFrame {
                         }
                         impresion += "\n";
                         texte.setText(impresion);
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura");
+                    JOptionPane.showMessageDialog(null, "No existeix l'assignatura o s'ha cancelat l'acció");
                 }
             }
 
@@ -247,11 +247,11 @@ public class interfaceGrafica extends JFrame {
                 JLabel missatge = new JLabel("DNI de l'estudiant?");
                 missatge.setFont(new Font("Arial", Font.BOLD, 18));
                 Object pregunta[] = {
-                missatge, res
+                    missatge, res
                 };
-                JOptionPane.showConfirmDialog(null, pregunta, "Quin es el DNI de l'estudiant?", JOptionPane.OK_CANCEL_OPTION);
+                int ok = JOptionPane.showConfirmDialog(null, pregunta, "Quin es el DNI de l'estudiant?", JOptionPane.OK_CANCEL_OPTION);
                 estudiant est = principal.getEstudiants().trobar(res.getText());
-                if (est != null) {
+                if (est != null && ok == JOptionPane.OK_OPTION) {
                     impresion += est.imprimirEstudiant();
                     impresion += "--------------------------------------------------------------------\n";
                     for (assignatura a : est.getLlistaAssignatures()) {
@@ -275,7 +275,7 @@ public class interfaceGrafica extends JFrame {
                     }
                     texte.setText(impresion);
                 } else {
-                    JOptionPane.showMessageDialog(null, "No existeix l'estudiant!");
+                    JOptionPane.showMessageDialog(null, "No existeix l'estudiant! o s'ha cancelat l'acció");
                 }
             }
 
@@ -407,13 +407,18 @@ public class interfaceGrafica extends JFrame {
             m1, codiCurs,
             m2, codi
         };
-        JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
+        int res = JOptionPane.showConfirmDialog(null, dades, "Codi", JOptionPane.OK_CANCEL_OPTION);
         //Si codi es null, retornam -1
         int resultats[] = {
             "".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText()),
             "".equals(codi.getText()) || !esNumero(codi.getText()) ? -1 : Integer.parseInt(codi.getText())
         };
-        return resultats;
+        if (res == JOptionPane.OK_OPTION) {
+            return resultats;
+        } else {
+            resultats[0] = -1;
+            return resultats;
+        }
     }
 
     private boolean esNumero(String nr) {
@@ -484,7 +489,7 @@ public class interfaceGrafica extends JFrame {
                             String nova[] = obrirEmergentAssignatura();
                             //en tipus es si es de batxiller o FP
                             problema = principal.altaAssignatura(codiCurs.getText(), nova[0], nova[1], nova[2], nova[3]);
-                            if (problema){
+                            if (problema) {
                                 break;
                             }
                         }
@@ -495,7 +500,7 @@ public class interfaceGrafica extends JFrame {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "No es possible!");
                     principal.baixaCurs(Integer.parseInt(codiCurs.getText()));
-                    
+
                 }
             }
         }
@@ -525,14 +530,14 @@ public class interfaceGrafica extends JFrame {
 //                        cont++;
 //                    }
 //                }
-                JTextField codi = new JTextField();
-                Object demanar[] = {
-                    "Quin es el codi (numeric)?: ", codi};
-                if (JOptionPane.showConfirmDialog(null, demanar, "CODI?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-                        String dades = codi.getText();
-                        //"".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText())
-                        return dades;
-                }   
+            JTextField codi = new JTextField();
+            Object demanar[] = {
+                "Quin es el codi (numeric)?: ", codi};
+            if (JOptionPane.showConfirmDialog(null, demanar, "CODI?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                String dades = codi.getText();
+                //"".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText())
+                return dades;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Dades o botons incorrectes!");
         }
