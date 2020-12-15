@@ -16,9 +16,11 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
     public llistaEstudiants() {
         primer = null;
     }
-    public nodoEstudiant getPrimer(){
+
+    public nodoEstudiant getPrimer() {
         return this.primer;
     }
+
     @Override
     public void borrar(String dni) {
         nodoEstudiant aux = primer;
@@ -59,6 +61,42 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
         return impr;
     }
 
+////////    @Override
+////////    public void insertar(estudiant est) {
+////////        boolean trobat = false;
+////////        nodoEstudiant elem = new nodoEstudiant(est);
+////////        if (trobar(elem.getEstudiant().getDni()) == null) {
+////////            //cas primer
+////////            nodoEstudiant aux = primer;
+////////            nodoEstudiant pAux = null;
+////////            primer = elem;
+////////            elem.setSeg(aux);
+////////            while (aux.seguent() != null && !trobat) {
+////////                if (elem == primer) {
+////////                    if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) >= 0) {
+////////                        aux.setSeg(primer);
+////////                        primer = aux;
+////////                        pAux = primer;
+////////                    } else {
+////////                        trobat = true;
+////////                    }
+////////                } else {
+////////                    if((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.seguent().getEstudiant().getNom().toLowerCase())) >= 0){
+////////                        nodoEstudiant seg = aux.seguent();
+////////                        aux.setSeg(seg.seguent());
+////////                        pAux.setSeg(seg);
+////////                        seg.setSeg(aux);
+////////                        pAux = seg;
+////////                    }
+////////                    else{
+////////                        trobat = true;
+////////                    }
+////////                }
+////////            }
+////////            //cas altres
+////////        }
+////////    }
+
     @Override
     public void insertar(estudiant est) {
         nodoEstudiant elem = new nodoEstudiant(est);
@@ -66,10 +104,12 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
             boolean ficat = false;
             if (primer == null) {
                 primer = elem;
+                ficat = true;
             } else {
                 nodoEstudiant aux = primer;
                 nodoEstudiant ant = primer;
                 while (aux.seguent() != null) {
+                    //si el que metemos es menor al que ya hay
                     if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) < 0) {
                         //Cas primer element llista
                         if (ant == aux) {
@@ -90,11 +130,20 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
                 //Tant com si son iguals o el nou element es superior, el ficarem després de aux:
                 //If innecesari, més posat per el break;
                 if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) < 0 && !ficat) {
+                    if(ant == aux && primer.seguent() == null){
+                        primer = elem;
+                        elem.setSeg(ant);
+                    }
+                    else{
                     ant.setSeg(elem);
                     elem.setSeg(aux);
+                            }
+                    
+                    
                 }
-                if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) >= 0) {
+                if ((elem.getEstudiant().getNom().toLowerCase().compareTo(aux.getEstudiant().getNom().toLowerCase())) >= 0 && !ficat) {
                     aux.setSeg(elem);
+                    elem.setSeg(null);
                 }
             }
         }else{
@@ -102,12 +151,12 @@ public class llistaEstudiants implements interficieLlista<estudiant> {
         }
 
     }
-
+    
     @Override
     public estudiant trobar(String dni) {
-        nodoEstudiant aux = primer;
+        nodoEstudiant aux = this.primer;
         //Cas llista buida
-        if (primer == null) {
+        if (this.primer == null) {
             return null;
         } else {
             //Cercar en tota la llista fins trobar nom o arribar al final

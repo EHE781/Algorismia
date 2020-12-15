@@ -62,7 +62,6 @@ public class main {
     //una asignatura SOLO se da de alta en conjunto con otras en un mismo curso, por lo que se crea
     //si aun no está creado
     //si no se da de alta en el curso que le es asignado, tipus devuelve:
-    //0 si es bachiller, 1 si es FP
     //c_t val credits si es obligatoria i tipus si es optativa                  
     public boolean altaAssignatura(String codiCurs, String nom, String codi, String tipus, String c_t) {
         curs aux = cursos.trobar(codiCurs);
