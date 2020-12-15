@@ -143,7 +143,7 @@ public class interfaceGrafica extends JFrame {
                                 nodoEstudiant est = a.llista.getPrimer();
                                 while (est != null) {
                                     estudiant e = est.getEstudiant();
-                                    impresion += "\n";
+                                    impresion += "\n\n";
                                     impresion += e.imprimirEstudiant();
                                     impresion += "\n\n";
                                     est = est.seguent();
