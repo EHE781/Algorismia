@@ -1,13 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Clase FP
  */
 package practica_1_algorismia;
 
 /**
- *
- * @author tomeu
+ * @authors Damián Gebhard , Emanuel Hegedus , Bartomeu Capó
  */
 public class FP extends curs {
     public enum especialitat {mecanica,electronica,informatica}

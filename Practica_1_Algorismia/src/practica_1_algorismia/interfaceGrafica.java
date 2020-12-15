@@ -1,49 +1,30 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Clase InterfaceGrafica on manipulam tots els grafics de l'app
  */
 package practica_1_algorismia;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 /**
  *
- * @author emanu
+ * @authors Damián Gebhard , Emanuel Hegedus , Bartomeu Capó
  */
 public class interfaceGrafica extends JFrame {
 
-    private final String[] nom_elements = {"<html><h2>Matricular estudiant</h2></html>",
+    private final String[] nom_elements = {
+        "<html><h2>Matricular estudiant</h2></html>",
         "<html><h2>Donar de alta curs</h2></html>",
         "<html><h2>Donar de baixa curs</h2></html>",
         "<html><h2>Donar de baixa assignatura</h2></html>"};
     private final int BOTONS_ELEMENTS = nom_elements.length;
-    private final int BOTONS_OPERACIONS = 2;//3 diferents imprimirs
+    private final int BOTONS_OPERACIONS = 2;
     private String imatgeLogo = "resources/logo.png";
     private main principal;
     private JTextArea texte = null;
@@ -64,10 +45,10 @@ public class interfaceGrafica extends JFrame {
         this.setVisible(true);
     }
 
-    //Logo de l'escola, i rellotge.
+    //Logo de l'escola.
     private void inicialitzaNord() {
         JPanel tiraSuperior = new JPanel();
-        tiraSuperior.setBackground(new Color(216, 92, 213));
+        tiraSuperior.setBackground(Color.GRAY);
         tiraSuperior.setLayout(new FlowLayout());
         JLabel logo = new JLabel();
         Image imatge = null;
@@ -81,18 +62,15 @@ public class interfaceGrafica extends JFrame {
         }
         logo.setIcon(new ImageIcon(img));
         logo.setSize(200, 100);
-        JLabel blank = new JLabel("<html><h1>Gestionador de cursos</title></h1>", SwingConstants.CENTER);
+        JLabel blank = new JLabel("<html><h1>Gestionador de col·legi </title></h1>", SwingConstants.CENTER);
         blank.setOpaque(true);
-        blank.setBackground(new Color(183, 0, 183));
+        blank.setBackground(new Color(152, 226, 233));
         blank.setSize(600, 100);
         blank.setMinimumSize(new Dimension(1150, 100));
         blank.setMaximumSize(new Dimension(1150, 100));
         blank.setPreferredSize(new Dimension(1150, 100));
-        JLabel temps = new JLabel();
-        temps.setSize(50, 100);
         tiraSuperior.add(logo);
         tiraSuperior.add(blank);
-        tiraSuperior.add(temps);
         this.add(tiraSuperior, BorderLayout.NORTH);
     }
 
@@ -108,11 +86,10 @@ public class interfaceGrafica extends JFrame {
         JButton botoAssignatura = new JButton("<html><h2>Imprimir assignatura</h2></html>");
         JButton botoEstudiant = new JButton("<html><h2>Imprimir estudiant</h2></html>");
         JButton limpiar = new JButton("<html><h2>Borrar text imprimit</h2></html>");
-        //modificable
-        botoCurs.setBackground(Color.YELLOW);
-        botoAssignatura.setBackground(Color.yellow);
-        botoEstudiant.setBackground(Color.yellow);
-        limpiar.setBackground(Color.lightGray);
+        botoCurs.setBackground(new Color(250,252,160));
+        botoAssignatura.setBackground(new Color(250,252,160));
+        botoEstudiant.setBackground(new Color(250,252,160));
+        limpiar.setBackground(new Color(250,252,160));
         limpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -123,7 +100,6 @@ public class interfaceGrafica extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String impresion = "";
-                //preguntar que curso imprimir
                 JTextField res = new JTextField();
                 JLabel missatge = new JLabel("Codi del curs:");
                 missatge.setFont(new Font("Arial", Font.BOLD, 18));
@@ -134,7 +110,7 @@ public class interfaceGrafica extends JFrame {
                 int codiCurs = "".equals(res.getText()) || !esNumero(res.getText()) ? -1 : Integer.parseInt(res.getText());
                 if (codiCurs == -1 || ok == JOptionPane.CANCEL_OPTION) {
                     JOptionPane.showMessageDialog(null, "No es pot llegir el codi!");
-                } //imprimir ese curso
+                } 
                 else {
                     if (principal.getCursos().trobar(String.valueOf(codiCurs)) != null) {
                         if (principal.getCursos().trobar(String.valueOf(codiCurs)) instanceof batxiller) {
@@ -181,8 +157,6 @@ public class interfaceGrafica extends JFrame {
                     }
 
                 }
-                //imprimir las asignaturas que tiene
-                //imprimir estudiantes matricualdos a cada asginatura
             }
 
         };
@@ -289,7 +263,6 @@ public class interfaceGrafica extends JFrame {
         operacions.add(limpiar);
         JButton botonsElements[] = new JButton[BOTONS_ELEMENTS];
         ActionListener accions[] = new ActionListener[BOTONS_ELEMENTS];
-        //faltan 3 actionListeners de las 3 acciones que faltan
         ActionListener matricular = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -344,7 +317,7 @@ public class interfaceGrafica extends JFrame {
             elements.add(boto);
             botonsElements[i] = boto;
             boto.addActionListener(accions[i]);
-            boto.setBackground(Color.green);
+            boto.setBackground(new Color(182,251,162));
         }
         JPanel elemOp = new JPanel();
         elemOp.setLayout(new GridLayout(5, 1));
@@ -352,7 +325,7 @@ public class interfaceGrafica extends JFrame {
         JLabel titolImpresions = new JLabel("<html><h1>Impressions</h1></html>", SwingConstants.CENTER);
         titolOperacions.setOpaque(true);
         titolImpresions.setOpaque(true);
-        titolOperacions.setBackground(new Color(83, 255, 83));
+        titolOperacions.setBackground(new Color(103, 255, 103));
         titolImpresions.setBackground(new Color(255, 255, 83));
         elemOp.add(titolOperacions);
         elemOp.add(elements);
@@ -371,7 +344,7 @@ public class interfaceGrafica extends JFrame {
         exit.setOpaque(true);
         exit.setBackground(new Color(255, 83, 83));
         tancament.setLayout(new GridLayout(2, 1));
-        tancar.setBackground(Color.RED);
+        tancar.setBackground(new Color(254,131,131));
         tancament.add(exit);
         tancament.add(tancar);
         elemOp.add(tancament);
@@ -396,7 +369,7 @@ public class interfaceGrafica extends JFrame {
     }
 
     //Retorna el codi o -1 si no es fica cap codi
-    public int[] obrirEmergentBorrarAssignatura() {
+    private int[] obrirEmergentBorrarAssignatura() {
         JTextField codi = new JTextField();
         JTextField codiCurs = new JTextField();
         JLabel m1 = new JLabel("Codi del curs en el que es troba: ");
@@ -430,7 +403,7 @@ public class interfaceGrafica extends JFrame {
         }
     }
 
-    public void obrirEmergentAltaCurs() {
+    private void obrirEmergentAltaCurs() {
         JTextField nr = new JTextField();
         boolean problema = false;
         String[] nomTipusCurs = {"Batxiller", "FP"};
@@ -506,9 +479,7 @@ public class interfaceGrafica extends JFrame {
         }
     }
 
-    public String obrirEmergentBaixaCurs() {
-        //String tipus[] = {"Batxiller", "FP"};
-        //JList lista = new JList<String>(tipus);
+    private String obrirEmergentBaixaCurs() {
         boolean batxNfp = false;
         String batx[] = new String[batxiller.especialitat.values().length];
         String fp[] = new String[FP.especialitat.values().length];
@@ -516,26 +487,11 @@ public class interfaceGrafica extends JFrame {
         JList listaBatx = new JList(batx);
         JList listaFp = new JList(fp);
         try {
-//            if (JOptionPane.showConfirmDialog(null, lista, "Tipus", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-//                if (lista.getSelectedValue().equals(tipus[0])) {
-//                    for (batxiller.especialitat i : batxiller.especialitat.values()) {
-//                        batx[cont] = i.toString();
-//                        cont++;
-//                    }
-//                    batxNfp = true;
-//                }
-//                if (lista.getSelectedValue().equals(tipus[1])) {
-//                    for (FP.especialitat i : FP.especialitat.values()) {
-//                        fp[cont] = i.toString();
-//                        cont++;
-//                    }
-//                }
             JTextField codi = new JTextField();
             Object demanar[] = {
                 "Quin es el codi (numeric)?: ", codi};
             if (JOptionPane.showConfirmDialog(null, demanar, "CODI?", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                 String dades = codi.getText();
-                //"".equals(codiCurs.getText()) || !esNumero(codiCurs.getText()) ? -1 : Integer.parseInt(codiCurs.getText())
                 return dades;
             }
         } catch (Exception e) {
@@ -544,7 +500,7 @@ public class interfaceGrafica extends JFrame {
         return null;
     }
 
-    public String[] obrirEmergentEstudiant() {
+    private String[] obrirEmergentEstudiant() {
         JTextField nom = new JTextField();
         JTextField dni = new JTextField();
         JTextField assignatura = new JTextField();
@@ -568,7 +524,7 @@ public class interfaceGrafica extends JFrame {
         }
     }
 
-    public String[] obrirEmergentAssignatura() {
+    private String[] obrirEmergentAssignatura() {
         JTextField nom = new JTextField();
         JTextField codi = new JTextField();
         JTextField credits = new JTextField();

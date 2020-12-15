@@ -1,19 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Clase llistaAssignatures
  */
 package practica_1_algorismia;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import javax.swing.JOptionPane;
+import java.util.*;
 
 /**
  *
- * @author Usuario
+ * @authors Damián Gebhard , Emanuel Hegedus , Bartomeu Capó
  */
 public class llistaAssignatures extends ArrayList<assignatura> implements interficieLlista<assignatura>{
     //Exception ListaVacia,posicionInexistente;
@@ -64,7 +58,6 @@ public class llistaAssignatures extends ArrayList<assignatura> implements interf
             this.remove(pos);
         } else {
             System.err.println("No existe");
-            //JOptionPane.showMessageDialog(null, "No existeix");
         }
     }
 
@@ -79,7 +72,7 @@ public class llistaAssignatures extends ArrayList<assignatura> implements interf
                 }
             });
         } else {
-            System.out.println("JA EXISTEIX");
+            System.err.println("JA EXISTEIX");
         }
     }
 

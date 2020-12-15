@@ -1,13 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Clase Assignatura
  */
 package practica_1_algorismia;
 
 /**
  *
- * @author tomeu
+ * @authors Damián Gebhard , Emanuel Hegedus , Bartomeu Capó
  */
 public abstract class assignatura implements interficieVariables,Comparable<assignatura>{
     protected String nom;

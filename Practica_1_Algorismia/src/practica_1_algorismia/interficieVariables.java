@@ -1,13 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Clase interficieVariables
  */
 package practica_1_algorismia;
 
 /**
  *
- * @author tomeu
+ * @authors Damián Gebhard , Emanuel Hegedus , Bartomeu Capó
  */
 public interface interficieVariables {
     public abstract void posarNom (String nom);
