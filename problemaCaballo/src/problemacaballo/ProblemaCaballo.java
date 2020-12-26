@@ -17,23 +17,28 @@ public class ProblemaCaballo {
     int movY[] = new int[8];
     int tablero[][];
     int caballo = 0;
-    int soluciones = 0;
-
+    int numSoluciones = 0;
+    int soluciones[][][];
+    tablero t;
     public void start() {
         formarMov();
         Scanner scan = new Scanner(System.in);
         System.out.println("Tamaño tablero?:");
         int size = scan.nextInt();
+        t = new tablero(size);
         System.out.println("Posicion caballo? (xy):");
         int x = scan.nextInt();
         int y = scan.nextInt();
         tablero = new int[size][size];
+        soluciones = new int[3][size * size][2];
         for (int i[] : tablero) {
             for (int j : i) {
                 j = 0;
             }
         }
         tablero[x][y] = ++caballo;
+        soluciones[numSoluciones][caballo - 1][0] = x;
+        soluciones[numSoluciones][caballo - 1][1] = y;
         if (x >= 0 && x < size && y >= 0 && y < size) {
             moverCaballo(x, y);
         }
@@ -53,9 +58,10 @@ public class ProblemaCaballo {
                 f = fc / tablero.length;
                 c = fc % tablero.length;
                 tablero[f][c] = ++caballo;
-                if (moverCaballoR(f, c) && soluciones <=3) {
-                    soluciones++;
-                    System.out.println("Solución " + soluciones + ":\n");
+                soluciones[numSoluciones][caballo - 1][0] = f;
+                soluciones[numSoluciones][caballo - 1][1] = c;
+                if (moverCaballoR(f, c) && numSoluciones < 3) {
+                    System.out.println("Solución " + numSoluciones + ":\n");
                     //imprimir la solución
                     for (int j[] : tablero) {
                         for (int k : j) {
@@ -66,20 +72,27 @@ public class ProblemaCaballo {
                     System.out.println("****************************************\n");
 
                     //poner 0 a todo menos a 1
-                    for (int fila[] : tablero){
-                        for(int columna = 0; columna < fila.length; columna++){
+                    for (int fila[] : tablero) {
+                        for (int columna = 0; columna < fila.length; columna++) {
                             fila[columna] = 0;
                         }
                     }
                     caballo = 0;
                     tablero[x][y] = ++caballo;
-                    if(soluciones > 3){
+                    soluciones[numSoluciones][caballo - 1][0] = x;
+                    soluciones[numSoluciones][caballo - 1][1] = y;
+                    numSoluciones++;
+                    if (numSoluciones >= 3) {
                         break;
                     }
                 }
             }
         }
-        System.out.println("Se han encontrado un total de " + soluciones + " soluciones para el tablero.");
+        System.out.println("Se han encontrado un total de " + numSoluciones + " soluciones para el tablero.");
+        for(int solucion[][] : soluciones){
+            t.dibujarSoluciones(solucion, false);
+        }
+        t.dibujarSoluciones(null, true);
     }
 
     private boolean moverCaballoR(int x, int y) {
@@ -90,6 +103,8 @@ public class ProblemaCaballo {
                 f = fc / tablero.length;
                 c = fc % tablero.length;
                 tablero[f][c] = ++caballo; // anotar
+                soluciones[numSoluciones][caballo - 1][0] = f;
+                soluciones[numSoluciones][caballo - 1][1] = c;
                 if (caballo == tablero.length * tablero.length) { // si ya ha recorrido todo el tablero
                     return true;
                 }
