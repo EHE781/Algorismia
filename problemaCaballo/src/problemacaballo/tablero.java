@@ -54,7 +54,6 @@ public class tablero extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void inicializarCasillas() {
