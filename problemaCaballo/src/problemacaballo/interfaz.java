@@ -6,10 +6,12 @@
 package problemacaballo;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +31,7 @@ public class interfaz extends JFrame {
     private boolean ready = false;
     private final Dimension coorSize = new Dimension(100, 100);//es ignorada se puede quitar
     private problemaCaballo pr;
-
+    
     public interfaz() {
         this.setLayout(new GridLayout(4, 1));
         inicializar();
@@ -89,7 +91,7 @@ public class interfaz extends JFrame {
                     pr = new problemaCaballo();
                     pr.start(getSizeTablero(), getXCaballo(), getYCaballo());
                     soluciones.setEnabled(pr.getReady());
-                    if(!pr.getReady()){
+                    if (!pr.getReady()) {
                         JOptionPane.showMessageDialog(null, "No se han encontrado soluciones");
                     }
                 }
