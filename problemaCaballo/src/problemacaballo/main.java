@@ -12,7 +12,6 @@ package problemacaballo;
 public class main {
     public static void main(String[] args){
         interfaz menu = new interfaz();
-        tablero t = null;    
         
     }
 }
