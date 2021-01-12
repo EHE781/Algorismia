@@ -43,7 +43,7 @@ public class problemaCaballo {
         }
     }
     int contadorIteraciones = 0;
-
+//quitar imprimir segunda solucion
     private void moverCaballo(int x, int y) {
         int f, c;
         for (int i = 0; i < 8; i++) {

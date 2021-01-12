@@ -21,7 +21,7 @@ import javax.swing.JLabel;
  *
  * @author emanu
  */
-public class tablero extends JFrame {
+public class toconeraiBorrable extends JFrame {
     private caballo horse;
     JLabel casillas[][];
     private boolean colorear = false;
@@ -32,7 +32,7 @@ public class tablero extends JFrame {
     private boolean ready = false;
     private int cont = 0;
 
-    public tablero(int n) {
+    public toconeraiBorrable(int n) {
         puntos = new Point[3][n * n];
         for (Point punto[] : puntos) {
             for (int p = 0; p < punto.length; p++) {
@@ -52,7 +52,9 @@ public class tablero extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
-
+    public static void main(String args[]){
+        toconeraiBorrable t = new toconeraiBorrable(250);
+    }
     private void inicializarCasillas() {
         for (int i = 0; i < casillas.length; i++) {
             for (int j = 0; j < casillas.length; j++) {
@@ -111,7 +113,7 @@ public class tablero extends JFrame {
             g2d.drawImage(horse.getCaballo(), horse.getX(), horse.getY(), null);
             Color colores[] = new Color[3];
             colores[0] = Color.RED;
-            colores[1] = Color.GREEN;
+            colores[1] = Color.BLUE;
             colores[2] = Color.YELLOW;
             int contador = 0;
             int ARR_SIZE = 13;
@@ -145,3 +147,4 @@ public class tablero extends JFrame {
 
     
 }
+
