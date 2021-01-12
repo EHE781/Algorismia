@@ -1,5 +1,6 @@
 package problemanreinas;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +27,12 @@ public class ProblemaNReinas {
     public ProblemaNReinas(){
         JLabel askReinas = new JLabel("<html><h1>Reinas?</h1></html>");
         JTextField nReinas = new JTextField();
+        nReinas.setFont(new Font("Arial", Font.BOLD,30));
         JLabel askPosicion = new JLabel("<html><h2>Posición reina?</h2></html>");
         JTextField xReina = new JTextField();
+        xReina.setFont(new Font("Arial", Font.BOLD,30));
         JTextField yReina = new JTextField();
+        yReina.setFont(new Font("Arial", Font.BOLD,30));
         JButton aceptar = new JButton("Calcular");
         aceptar.addActionListener(new ActionListener(){
             @Override
