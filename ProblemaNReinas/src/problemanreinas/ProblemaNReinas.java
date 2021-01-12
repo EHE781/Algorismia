@@ -1,8 +1,16 @@
 package problemanreinas;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Scanner;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -12,27 +20,61 @@ import java.util.Scanner;
  */
 public class ProblemaNReinas {
 
-    public static PrintWriter out = new PrintWriter(System.out);
-    public static QueenPosition[] p;
+    public PrintWriter out = new PrintWriter(System.out);
+    public reina[] reinas;
+    int n, f, c;
+    public ProblemaNReinas(){
+        JLabel askReinas = new JLabel("<html><h1>Reinas?</h1></html>");
+        JTextField nReinas = new JTextField();
+        JLabel askPosicion = new JLabel("<html><h2>Posición reina?</h2></html>");
+        JTextField xReina = new JTextField();
+        JTextField yReina = new JTextField();
+        JButton aceptar = new JButton("Calcular");
+        aceptar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                n = Integer.parseInt(nReinas.getText());
+                f = Integer.parseInt(yReina.getText());
+                c = Integer.parseInt(xReina.getText());
+                start();
+            }
+        
+        });
+        JPanel nrReinas = new JPanel();
+        nrReinas.setLayout(new GridLayout(1,2));
+        nrReinas.add(askReinas);
+        nrReinas.add(nReinas);
+        JPanel coor = new JPanel();
+        coor.setLayout(new GridLayout(1,3));
+        coor.add(askPosicion);
+        coor.add(xReina);
+        coor.add(yReina);
+        JFrame win = new JFrame("Datos");
+        win.setLayout(new GridLayout(3,1));
+        win.add(nrReinas);
+        win.add(coor);
+        win.add(aceptar);
+        win.pack();
+        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        win.setLocationRelativeTo(null);
+        win.setVisible(true);
+    }
 
-    public static void main(String[] args) {
+    public void start() {
+        reinas = new reina[n];
+        reinas[0] = new reina(f, c);
 
-        System.out.println("Enter Number of Queens");
-        Scanner s = new Scanner(System.in);
-        int n = s.nextInt();
-        int f = 21;
-        int c = 27;
-        p = new QueenPosition[n];
-        p[0] = new QueenPosition(f, c);
-
-        if (getSolution(n, 0, 0)) {
+        if (getSolution(n, 0, 1)) {
             int[][] result = new int[n][n];
-            for(QueenPosition q : p){
-                if(q != null){
-                    result[q.row][q.col] = 1;
+            for (reina q : reinas) {
+                if (q != null) {
+                    result[q.f][q.c] = 1;
                 }
             }
-
+            tablero t = new tablero(n);
+            t.dibujarSoluciones(result, reinas);
+            t.setVisible(false);
+            t.setVisible(true);
             out.println("\n\nDisplay using normal For loop \n---------------------------");
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
@@ -42,52 +84,69 @@ public class ProblemaNReinas {
             }
         } else {
             out.println("Solution not available.");
+            JOptionPane.showMessageDialog(null, "No hay soluciones!!!");
         }
 
         out.flush();
 
     }
 
-    public static boolean getSolution(int n, int row, int cont) {
-        if (n == 2 || n == 3) {
+    public boolean getSolution(int n, int columna, int cont) {
+        if (n == 2 || n == 3 || columna == n) {
             return false;
         }
+        boolean check = false;
+        boolean terminate = false;
+        for (int f = 0; f < n; f++) {
+            boolean posible = true;
+            for (reina r : reinas) {
+                if (r != null) {
 
-        if (row == n || cont == n - 1) {
-            return true;
+                    if (r.c == columna) {
+                        terminate = true;
+                        break;
+                    } else {
+                        if (r.f - r.c == f - columna
+                                || r.f == f
+                                || r.f + r.c == f + columna) {
+                            posible = false;
+                            break;
+                        }
+                    }
+
+                } else {
+                    check = true;
+                    break;
+                }
+            }
+            if (terminate) {
+                break;
+            } else {
+                if (posible && check) {
+                    reinas[cont] = new reina(f, columna);
+                    if (cont == n - 1) {
+                        return true;
+                    }
+                    if (getSolution(n, columna + 1, cont + 1)) {
+                        return true;
+                    }
+                }
+            }
         }
-
-        for (int col = 0; col < n; col++) {
-            boolean isSafe = true;
-            p[cont] = new QueenPosition(row, col);
-
-            for (int placedQueen = 0; placedQueen < row; placedQueen++) {
-                if (p[placedQueen].col == col || p[placedQueen].row == row ||
-                        p[placedQueen].row - p[placedQueen].col == row - col
-                        || p[placedQueen].row + p[placedQueen].col == row + col) {
-                    isSafe = false;
-                
-                }
+        if (terminate) {
+            if (getSolution(n, columna + 1, cont)) {
+                return true;
             }
-
-            if (isSafe) {
-                if (getSolution(n, row + 1, cont + 1)) {
-                    return true;
-                }
-            }
+        }
+        reinas[cont] = null;
+        if (cont != 1) //llevarem la reina anterior per evitar colisions al tornal al for, pero no la primera posada
+        {
+            reinas[cont - 1] = null;
         }
         return false;
     }
-}
 
-class QueenPosition {
-
-    int row;
-    int col;
-
-    public QueenPosition(int row, int col) {
-        super();
-        this.row = row;
-        this.col = col;
+    public static void main(String[] args) {
+        ProblemaNReinas p = new ProblemaNReinas();
     }
 }
