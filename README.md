@@ -1,5 +1,5 @@
-# Practica1Algorismia
-Repositorio para las diferente prácticas a realizar durante el curso 2020-21 
+# Practicas Algorismia
+Repositorio para las diferentes prácticas a realizar durante el curso 2020-21 
 	Para la clase de Algorismia impartida por el profesor Gabriel Fiol Roig
 	De momento se dispone de los siguientes programas
 		- Gestión de un colegio (aplicar conocimientos de clases abstractas, instancias, etc)
