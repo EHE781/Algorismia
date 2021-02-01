@@ -67,10 +67,19 @@ public class interfaz extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 tablero t = new tablero(getSizeTablero());
+                int cont=1;
                 for (int solucion[][] : getInstance().soluciones) {
                     t.dibujarSoluciones(solucion, false);
+                    if(pr.numSoluciones==cont){
+                        break;
+                    }
+                    cont++;
                 }
                 t.dibujarSoluciones(null, true);
+                if(pr.numSoluciones != 3){
+                    JOptionPane.showMessageDialog(null, "No se han encontrado 3 soluciones.\n"
+                            + "Solo se han encontrado "+pr.numSoluciones+" solucion/es.");
+                }
                 pr.setFalse();
                 soluciones.setEnabled(false);
             }

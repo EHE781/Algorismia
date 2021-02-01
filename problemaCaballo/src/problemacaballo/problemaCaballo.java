@@ -44,6 +44,7 @@ public class problemaCaballo {
     }
     int contadorIteraciones = 0;
 //quitar imprimir segunda solucion
+
     private void moverCaballo(int x, int y) {
         int f, c;
         for (int i = 0; i < 8; i++) {
@@ -54,7 +55,9 @@ public class problemaCaballo {
                 tablero[f][c] = ++caballo;
                 soluciones[numSoluciones][caballo - 1][0] = f;
                 soluciones[numSoluciones][caballo - 1][1] = c;
+
                 if (moverCaballoR(f, c) && numSoluciones < 3) {
+
                     System.out.println("Solución " + numSoluciones + ":\n");
                     //imprimir la solución
                     for (int j[] : tablero) {
@@ -79,6 +82,9 @@ public class problemaCaballo {
                     if (numSoluciones >= 3) {
                         break;
                     }
+                    i--;
+                } else {
+                    caballo--;
                 }
             }
         }
@@ -101,10 +107,15 @@ public class problemaCaballo {
                 f = fc / tablero.length;
                 c = fc % tablero.length;
                 tablero[f][c] = ++caballo; // anotar
+                if ((caballo == 3 && numSoluciones == 0) && (f == 4 && c == 4)) {
+                    int aqui = 0;
+                }
                 soluciones[numSoluciones][caballo - 1][0] = f;
                 soluciones[numSoluciones][caballo - 1][1] = c;
                 if (caballo == tablero.length * tablero.length) { // si ya ha recorrido todo el tablero
-                    return true;
+                    if (solucionNueva()) {
+                        return true;
+                    }
                 }
                 if (moverCaballoR(f, c)) {
                     return true;
@@ -145,6 +156,9 @@ public class problemaCaballo {
     }
 
     private int siguienteMovimiento(int x, int y, int i) {
+        if (x == 0 && y == 4 && caballo == 2) {
+            int debug = 0;
+        }
         int fila = x;
         int columna = y;
         fila += movX[i];
@@ -155,8 +169,27 @@ public class problemaCaballo {
             return -1;
         }
     }
-    public void setFalse(){
+
+    public void setFalse() {
         this.ready = false;
+    }
+
+    private boolean solucionNueva() {
+        for (int n = 0; n < numSoluciones; n++) {
+            for (int i = 0; i < soluciones[0].length; i++) {
+                for (int j = 0; j < 2; j++) {
+                    if (soluciones[n][i][j] != soluciones[numSoluciones][i][j]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        if (numSoluciones == 0) //caso en el que es la primera solucion
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
