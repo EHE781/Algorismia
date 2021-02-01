@@ -55,7 +55,6 @@ public class problemaCaballo {
                 tablero[f][c] = ++caballo;
                 soluciones[numSoluciones][caballo - 1][0] = f;
                 soluciones[numSoluciones][caballo - 1][1] = c;
-
                 if (moverCaballoR(f, c) && numSoluciones < 3) {
 
                     System.out.println("Solución " + numSoluciones + ":\n");
@@ -74,16 +73,20 @@ public class problemaCaballo {
                             fila[columna] = 0;
                         }
                     }
+
                     caballo = 0;
-                    tablero[x][y] = ++caballo;
-                    soluciones[numSoluciones][caballo - 1][0] = x;
-                    soluciones[numSoluciones][caballo - 1][1] = y;
+                    tablero[x][y] = ++caballo; //caballo = 1
                     numSoluciones++;
                     if (numSoluciones >= 3) {
                         break;
                     }
+                    soluciones[numSoluciones][caballo - 1][0] = x;
+                    soluciones[numSoluciones][caballo - 1][1] = y;
+
                     i--;
+
                 } else {
+
                     caballo--;
                 }
             }
@@ -107,9 +110,6 @@ public class problemaCaballo {
                 f = fc / tablero.length;
                 c = fc % tablero.length;
                 tablero[f][c] = ++caballo; // anotar
-                if ((caballo == 3 && numSoluciones == 0) && (f == 4 && c == 4)) {
-                    int aqui = 0;
-                }
                 soluciones[numSoluciones][caballo - 1][0] = f;
                 soluciones[numSoluciones][caballo - 1][1] = c;
                 if (caballo == tablero.length * tablero.length) { // si ya ha recorrido todo el tablero
@@ -175,21 +175,31 @@ public class problemaCaballo {
     }
 
     private boolean solucionNueva() {
-        for (int n = 0; n < numSoluciones; n++) {
-            for (int i = 0; i < soluciones[0].length; i++) {
-                for (int j = 0; j < 2; j++) {
-                    if (soluciones[n][i][j] != soluciones[numSoluciones][i][j]) {
-                        return true;
-                    }
-                }
-            }
-        }
+        boolean diferentes = false;
+
         if (numSoluciones == 0) //caso en el que es la primera solucion
         {
             return true;
         } else {
-            return false;
+            if (numSoluciones == 1) {
+                diferentes = fors(numSoluciones - 1);//compara la 0
+            } else {
+                diferentes = fors(numSoluciones - 1) && fors(numSoluciones - 2);//compara la 1 y la 0
+            }
+
         }
+        return diferentes;
+    }
+
+    private boolean fors(int n) {
+        for (int i = 0; i < soluciones[0].length; i++) { //comprueba una solucion
+            for (int j = 0; j < 2; j++) { //comprueba sus x/y
+                if (soluciones[n][i][j] != soluciones[numSoluciones][i][j]) { //si alguna no coincide,es different
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

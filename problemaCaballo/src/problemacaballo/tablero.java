@@ -110,16 +110,16 @@ public class tablero extends JFrame {
         if (ready) {
             g2d.drawImage(horse.getCaballo(), horse.getX(), horse.getY(), null);
             Color colores[] = new Color[3];
-            colores[0] = Color.RED;
-            colores[1] = Color.GREEN;
-            colores[2] = Color.YELLOW;
+            colores[0] = Color.MAGENTA;
+            colores[1] = Color.YELLOW;
+            colores[2] = Color.BLUE;
             int contador = 0;
-            int ARR_SIZE = 13;
-            int thickness = 10;
+            int ARR_SIZE = 18;
+            int thickness = 18;
             for (Point punto[] : puntos) {
                 g2d.setColor(colores[contador++]);
                 ARR_SIZE -= 3;
-                thickness -= 2;
+                thickness -= 4;
                 for (int j = 0; j < punto.length - 1; j++) {
                     g2d.setStroke(new BasicStroke(thickness));
                     double dx = punto[j + 1].x - punto[j].x;
